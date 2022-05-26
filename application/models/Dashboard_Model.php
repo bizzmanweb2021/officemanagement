@@ -6,11 +6,20 @@ class Dashboard_Model extends CI_Model
 {
 	function getAllDashboard()
 	{
-		$this->db->select('dashboard.*, u1.name as employee_name, u2.name as project_manager_name, companies.company_name');
+		$this->db->select('dashboard.*, 
+		u1.name as employee_name, 
+		u2.name as project_manager_name, 
+		companies.company_name,
+		tasks.name AS task_name,
+		sub_tasks.name AS sub_taskName,
+		super_sub_task.name AS super_taskName');
 		$this->db->from('dashboard');
 		$this->db->join('users u1','u1.id=dashboard.created_by');
 		$this->db->join('users u2','u2.id=dashboard.project_manager');
 		$this->db->join('companies','companies.id=dashboard.company');
+		$this->db->join('tasks', 'tasks.id = dashboard.task', 'left');
+		$this->db->join('sub_tasks', 'sub_tasks.id=dashboard.sub_task', 'left');
+		$this->db->join('super_sub_task', 'super_sub_task.id=dashboard.super_sub_task', 'left');
 		return $this->db->get()->result_array();
 	}
 	function insert($table,$data)

@@ -76,8 +76,8 @@ $query_builder = TRUE;
 $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost',
-	'username' => 'root', #bizzmantest_office
-	'password' => '', #Bizzmanweb@2021
+	'username' => 'bizzmantest_office', #root
+	'password' => 'C0#J=xnj^jU@', 
 	'database' => 'bizzmantest_office',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',

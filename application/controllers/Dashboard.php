@@ -16,10 +16,11 @@ class Dashboard extends CI_Controller
 			$data['dashboard']=$this->Dashboard->getAllDashboard();
 			$data['employers']=$this->Employer->getAllEmployers();
 			$data['employees']=$this->Employee->getAllEmployees();
-			/*$data['tasks']=$this->Task->getAllTasks();
-			$data['subtasks']=$this->Dashboard->getAllSubTasks();
+			$data['tasks']=$this->Task->getAllTasks();
+			$data['subtasks']=$this->Task->AllSubTasks();
+			$data['supertasks']=$this->Task->AllSuperTasks();
 			//$data['subtasks']=$this->Dashboard->getAssignedSubTasks();
-            $data['supertasks']=$this->Dashboard->getAllSuperSubTasks();*/
+            
 			$this->layout->view('dashboard/dashboard',$data);
 		}
 		else

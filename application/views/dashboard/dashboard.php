@@ -38,9 +38,9 @@
         <?php foreach($dashboard as $dashboards): ?>
           <tr style="background-color: #fff; color: #000">
             <td> <?= $dashboards['company_name']?></td>
-            <td> <?= $dashboards['task']?></td>
-            <td> <?= $dashboards['sub_task']?></td>
-            <td><?= $dashboards['super_sub_task']?></td>
+            <td> <?= $dashboards['task_name']?></td>
+            <td> <?= $dashboards['sub_taskName']?></td>
+            <td><?= $dashboards['super_taskName']?></td>
             <td> <?= $dashboards['project_manager_name']?></td>
             <td> <?= $dashboards['completion']?></td>
             <td><?= $dashboards['timeby']?></td>
@@ -102,15 +102,28 @@
                   </div>
                    <div class="form-group">
                     <label for="exampleInputPassword1">Task Name</label>
-										<input type="text" class="form-control" name="task_name" value = "">
+										<!--<input type="text" class="form-control" name="task_name" value = "">-->
+										<select class="form-control task" name="task_name">
+											<option value="" hidden>Select Task</option>
+											<?php foreach($tasks as $task): ?>
+												<option value="<?= $task['id']?>"><?= $task['name']?></option>
+											<?php endforeach; ?> 
+										</select>
                   </div>
                    <div class="form-group">
                     <label for="exampleInputPassword1">Subtask Name</label>
-										<input type="text" class="form-control" name="sub_task_name" value = "">
+										<!--<input type="text" class="form-control" name="sub_task_name" value = "">-->
+
+										<select class="form-control sub_task" name="sub_task_name">
+											<option value="" hidden>Select Task First</option>
+										</select>
                   </div>
                   <div class="form-group">
                     <label for="exampleInputPassword1">Super Sub Task</label>
-										<input type="text" class="form-control" name="super_sub_task_name" value = "">
+										<!--<input type="text" class="form-control" name="super_sub_task_name" value = "">-->
+										<select class="form-control super_sub_task" name="super_sub_task_name">
+											<option value="" hidden>Select Sub-Task First</option>
+										</select>
                   </div>
                   <div class="form-group">
                      <label for="exampleInputPassword1">Client</label>
@@ -185,4 +198,43 @@
          
 
         });*/
+
+
+	$(document).ready(function(){
+			$('.task').on('change', function(){
+					var taskID = $(this).val();
+					//alert(taskID);
+					if(taskID){
+							$.ajax({
+									type:'GET',
+									url:'<?= base_url("/Project/select_subTask_superTask")?>',
+									data: {taskID:taskID},
+									success:function(data){
+											$('.sub_task').html(data);
+											$('.super_sub_task').html('<option value="">Select Sub-task first</option>'); 
+									}
+							}); 
+					}else{
+							$('.sub_task').html('<option value="">Select Task first</option>');
+							$('.super_sub_task').html('<option value="">Select Sub-Task first</option>'); 
+					}
+			});
+			
+			$('.sub_task').on('change', function(){
+					var subTaskID = $(this).val();
+					//alert(subTaskID);
+					if(subTaskID){
+							$.ajax({
+									type:'GET',
+									url:'<?= base_url("/Project/select_subTask_superTask")?>',
+									data: {subTaskID:subTaskID},
+									success:function(data){
+											$('.super_sub_task').html(data);
+									}
+							}); 
+					}else{
+							$('.super_sub_task').html('<option value="">Select state first</option>'); 
+					}
+			});
+	});
     </script>

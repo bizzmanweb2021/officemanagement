@@ -29,6 +29,13 @@ class Employer_Model extends CI_Model
 		$this->db->join('users','users.id=companies.created_by');
 		return $this->db->get()->result_array();
 	}
+	function getEditEmployers($id)
+	{
+		$this->db->select('companies.*');
+		$this->db->from('companies');
+		$this->db->where('companies.id',$id);
+		return $this->db->get()->result_array();
+	}
 	public function save($table_name, $data = array()) {
         $insert = $this->db->insert($table_name, $data);
         return $insert;

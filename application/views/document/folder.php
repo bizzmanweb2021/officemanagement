@@ -17,128 +17,253 @@
       <!-- Main content -->
       <section class="content">
           <div class="container-fluid">
+
               <div class="row">
                   <div class="col-md-12">
 
                     <div class="card" style="border-radius: 15px">
-                        <div class="card-header">
-
-                        </div>
+                        <div class="card-header"></div>
 
 						<!-- /.card-header -->
-						<div class="card-body">
-						<!--<h4>File upload</h4>
-							<form id = "" action="<?= base_url('document/post_add_image/'.$this->uri->segment(3)) ?>" method="post"
-							enctype="multipart/form-data">
-								<input type="file" class="" id="" name="files[]" multiple required="" style="margin-top: 10px;">
-								<input class="btn btn-success" type="submit" name="fileSubmit" style="width: 15%" value="UPLOAD" />
-							</form>-->
-							<div class="row p-3">
-								<div class="col-md-1">
-									<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#rocModal" style="background-color: #023e8a; color:#fff">Add ROC</button>
+						<!--start ROC -->
+						<div class="accordion md-accordion" id="accordionEx1" role="tablist" aria-multiselectable="true">
+                     <!-- Accordion card -->
+                     <div class="card">
+                        <!-- Card header -->
+                        <div class="card-header" role="tab" id="headingThree1" style="background-color: #00b0bb;">
+                           <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx1" href="#collapseThree1"
+                              aria-expanded="false" aria-controls="collapseThree1" style="color: #FFFFFF;text-decoration: none;">
+                              <div class="purple-gradient delivery-heading">
+                                 <h2>ROC:<i class="fa fa-angle-down rotate-icon" style="float:right;"></i></h2>
+                              </div>
+                           </a>
+                        </div>
+                        <!-- Card body -->
+                        <div id="collapseThree1" class="collapse" role="tabpanel" aria-labelledby="headingThree1"
+                           data-parent="#accordionEx1">
+                           <div class="card-body">
+                              <div class="clearfix">
+                                 <div class="col-lg-12 col-md-6 col-sm-6 col-xs-12">
+                                    <div class="card bg-c-darkred update-card">
+                                       <div class="card-block">
+                                          <div class="align-items-end">
+										  	<div class="row">
+												<div class="col-md-1 roc_button">
+													<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#rocModal" style="background-color: #023e8a; color:#fff">Add ROC</button>
+												</div>
+												<div class="col-md-2 roc_button">
+													<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addFromNumberModal" style="background-color: #023e8a; color:#fff">Add Form Number</button>
+												</div>
+											</div>
+											<div class="site-table rocTable" style="overflow: auto; height: 300px;">
+												<table class="table table-bordered" style="overflow: auto; width: 100%; height: 250px; text-align: center;">
+												<thead style="background-color:#023047; color: #fff;position: sticky;top: 0;">
+												<tr>
+													<th>Company Name </th>
+													<th>Form Name</th>
+													<th>Year/Period</th>
+													<th>Date Of Filing</th>
+													<th>Statutory Due Date</th>
+													<th>SRN</th>
+													<th>Type of Fee</th>
+													<th>Amount</th>
+													<th>Created By</th>
+													<th>Challan</th>
+													<th>ROC Form</th>
+													<th>Additional file-1</th>
+													<th>Additional file-2</th>
+													<th>Status</th>
+													<th>Action</th>
+												</tr>
+												</thead>
+												<tbody>
+													<?php foreach($registrars_companies as $registrars_companiesRow): ?>
+													<tr style="background-color: #fff; color: #000">
+														<td><?= $registrars_companiesRow['company_name']?></td>
+														<td><?= $registrars_companiesRow['form_number']?></td>
+														<td><?= $registrars_companiesRow['year_period']?></td>
+														<td><?= $registrars_companiesRow['date_of_filing']?></td>
+														<td><?= $registrars_companiesRow['statutory_due_date']?></td>
+														<td><?= $registrars_companiesRow['srn']?></td>
+														<td><?php if($registrars_companiesRow['type_ofFee'] == 1){ ?>
+															Normal
+														<?php }elseif($registrars_companiesRow['type_ofFee'] == 2){ ?>
+															Additional
+														<?php }elseif($registrars_companiesRow['type_ofFee'] == 3){ ?>
+															Normal & Additional
+														<?php }elseif($registrars_companiesRow['type_ofFee'] == 4){ ?>
+															Total
+														<?php }else{} ?></td>
+														<td><?= $registrars_companiesRow['amount']?></td>
+														<td><?= $registrars_companiesRow['user_name']?></td>
+														<td>
+															<?php if($registrars_companiesRow['challan_type']=='image/jpg' || $registrars_companiesRow['challan_type']=='image/png' || $registrars_companiesRow['challan_type']=='image/jpeg'){ ?>
+												
+															<a href="<?php echo base_url('uploads/roc_img/'.$registrars_companiesRow['roc_challan']) ?>" target="_blank" class=""><img src="<?= base_url('uploads/roc_img/'.$registrars_companiesRow['roc_challan'])?>" width="60" height="60" style="object-fit:cover;"></a>
+													
+															<?php } elseif($registrars_companiesRow['challan_type'] =='application/pdf' || $registrars_companiesRow['challan_type'] =='application/docx') { ?>
+																<a href="<?= base_url('uploads/roc_img/'.$registrars_companiesRow['roc_challan'])?>" target="_blank"><i class="fa fa-file-pdf" style="font-size:40px;color:red;"></i></a>
+															<?php }else{} ?>
+														</td>
+														<td>
+														<?php if($registrars_companiesRow['form_type']=='image/jpg' || $registrars_companiesRow['form_type']=='image/png' || $registrars_companiesRow['form_type']=='image/jpeg'){ ?>
+
+															<a href="<?php echo base_url('uploads/roc_img/'.$registrars_companiesRow['roc_form']); ?>" target="_blank" class=""><img src="<?= base_url('uploads/roc_img/'.$registrars_companiesRow['roc_form'])?>" width="60" height="60" style="object-fit:cover;"></a>
+
+														<?php } elseif($registrars_companiesRow['form_type'] =='application/pdf' || $registrars_companiesRow['form_type'] =='application/docx') { ?>
+														<a href="<?= base_url('uploads/roc_img/'.$registrars_companiesRow['roc_form'])?>" target="_blank"><i class="fa fa-file-pdf" style="font-size:40px;color:red;"></i></a>
+														<?php } ?>
+														</td>
+														<td>
+														<?php if($registrars_companiesRow['additional_file1_type']=='image/jpg' || $registrars_companiesRow['additional_file1_type']=='image/png' || $registrars_companiesRow['additional_file1_type']=='image/jpeg'){ ?>
+												
+															<a href="<?php echo base_url('uploads/roc_img/'.$registrars_companiesRow['additional_file_1']) ?>" target="_blank" class=""><img src="<?= base_url('uploads/roc_img/'.$registrars_companiesRow['additional_file_1'])?>" width="60" height="60" style="object-fit:cover;"></a>
+													
+															<?php } elseif($registrars_companiesRow['additional_file1_type'] =='application/pdf' || $registrars_companiesRow['additional_file1_type'] =='application/docx') { ?>
+																<a href="<?= base_url('uploads/roc_img/'.$registrars_companiesRow['additional_file_1'])?>" target="_blank"><i class="fa fa-file-pdf" style="font-size:40px;color:red;"></i></a>
+															<?php }else{} ?>
+														</td>
+														<td>
+														<?php if($registrars_companiesRow['additional_file2_type']=='image/jpg' || $registrars_companiesRow['additional_file2_type']=='image/png' || $registrars_companiesRow['additional_file2_type']=='image/jpeg'){ ?>
+												
+														<a href="<?php echo base_url('uploads/roc_img/'.$registrars_companiesRow['additional_file_2']) ?>" target="_blank" class=""><img src="<?= base_url('uploads/roc_img/'.$registrars_companiesRow['additional_file_2'])?>" width="60" height="60" style="object-fit:cover;"></a>
+												
+														<?php } elseif($registrars_companiesRow['additional_file2_type'] =='application/pdf' || $registrars_companiesRow['additional_file2_type'] =='application/docx') { ?>
+															<a href="<?= base_url('uploads/roc_img/'.$registrars_companiesRow['additional_file_2'])?>" target="_blank"><i class="fa fa-file-pdf" style="font-size:40px;color:red;"></i></a>
+														<?php }else{} ?>
+														</td>
+														<td><?php if($registrars_companiesRow['status'] == 1){ ?>
+															<span class = "btn btn-primary" style="box-shadow:none !important; text-transform:uppercase;">Completed</span>
+														<?php }elseif($registrars_companiesRow['status'] == 3){ ?>
+															<span class="btn btn-success" style="box-shadow:none !important; text-transform:uppercase;">Approved</span>	
+														<?php }else{ ?>
+															<span class="btn btn-info" style="box-shadow:none !important; text-transform:uppercase;">Pending</span>	
+														<?php } ?>
+														</td>
+														<td>
+														<a  href="javascript:void(0);" data-registrars_companies_Id="<?=  $registrars_companiesRow['id'];?>" data-folder_assign_id = "<?= $registrars_companiesRow['folder_assign_id'] ?>" class="btn btn-default Registrars_companiesStatus" title="Status"><button type="button" class="btn btn-default" style="background-color: #023e8a; color:#fff" data-toggle="tooltip"><i class="fas fa-tasks"></i></button></a>
+														
+														<a href="javascript:void(0);" data-registrars_companies_Id="<?=  $registrars_companiesRow['id'];?>" data-folder_assign_id = "<?= $registrars_companiesRow['folder_assign_id'] ?>" class="btn btn-default openRegistrars_companies" title="Capture"><button type="button" class="btn btn-default" onclick="on_camera()" style="background-color: #023e8a; color:#fff" data-toggle="tooltip"><i class="fa fa-camera"></i></button></a>
+														</td>
+													</tr>
+													<?php endforeach; ?>
+												</tbody>
+												</table>
+											</div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- Accordion card -->
+                  </div>
+				<!-- End ROC -->
+
+				<!-- start income tax-->
+				<div class="accordion md-accordion" id="accordionEx2" role="tablist" aria-multiselectable="true">
+                     <!-- Accordion card -->
+                     <div class="card">
+                        <!-- Card header -->
+                        <div class="card-header" role="tab" id="headin2gThree2" style="background-color: #00b0bb;">
+                           	<a class="collapsed" data-toggle="collapse" data-parent="#accordionEx2" href="#collapseThree2"
+                              aria-expanded="false" aria-controls="collapseThree2" style="color: #FFFFFF;text-decoration: none;">
+								<div>
+									<h2>INCOME TAX:<i class="fa fa-angle-down rotate-icon" style="float:right;"></i></h2>
 								</div>
-								<div class="col-md-2">
-									<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addFromNumberModal" style="background-color: #023e8a; color:#fff">Add Form Number</button>
+                           	</a>
+                        </div>
+                        <!-- Card body -->
+                        <div id="collapseThree2" class="collapse" role="tabpanel" aria-labelledby="headingThree2"
+                           data-parent="#accordionEx2">
+                           <div class="card-body">
+                              <div class="clearfix">
+                                 <div class="col-lg-12 col-md-6 col-sm-6 col-xs-12">
+                                    <div class="card bg-c-darkred update-card">
+                                       <div class="card-block">
+                                          <div class="align-items-end">
+												<?php $this->load-> view('document/income_tax_view'); ?>		
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- Accordion card -->
+                  </div>
+				<!-- end income tax-->
+
+
+				  <div class="accordion md-accordion" id="accordionEx3" role="tablist" aria-multiselectable="true">
+                     <!-- Accordion card -->
+                     <div class="card">
+                        <!-- Card header -->
+                        <div class="card-header" role="tab" id="headin2gThree3" style="background-color: #00b0bb;">
+                           	<a class="collapsed" data-toggle="collapse" data-parent="#accordionEx3" href="#collapseThree3"
+                              aria-expanded="false" aria-controls="collapseThree3" style="color: #FFFFFF;text-decoration: none;">
+								<div>
+									<h2>ACCOUNT:<i class="fa fa-angle-down rotate-icon" style="float:right;"></i></h2>
 								</div>
-							</div>
-							
-							<div class="site-table" style="overflow: auto; height: 200px ">
-								<table class="table table-bordered table-striped" style="overflow: auto; width: 100%; height: 250px; text-align: center;">
-								<thead style="background-color:#023047; color: #fff;position: sticky;top: 0;">
-								<tr>
-									<th>Company Name </th>
-									<th>Form Name</th>
-									<th>Year/Period</th>
-									<th>Date Of Filing</th>
-									<th>Due Date</th>
-									<th>SRN</th>
-									<th>Type of Fee</th>
-									<th>Amount</th>
-									<th>Created By</th>
-									<th>Challan</th>
-									<th>ROC Form</th>
-									<th>Additional file-1</th>
-									<th>Additional file-2</th>
-									<th>Status</th>
-									<th>Action</th>
-								</tr>
-								</thead>
-								<tbody>
-									<?php foreach($registrars_companies as $registrars_companiesRow): ?>
-									<tr style="background-color: #fff; color: #000">
-										<td><?= $registrars_companiesRow['company_name']?></td>
-										<td><?= $registrars_companiesRow['form_number']?></td>
-										<td><?= $registrars_companiesRow['year_period']?></td>
-										<td><?= $registrars_companiesRow['date_of_filing']?></td>
-										<td><?= $registrars_companiesRow['statutory_due_date']?></td>
-										<td><?= $registrars_companiesRow['srn']?></td>
-										<td><?php if($registrars_companiesRow['type_ofFee'] == 1){ ?>
-											Normal
-										<?php }elseif($registrars_companiesRow['type_ofFee'] == 2){ ?>
-											Additional
-										<?php }elseif($registrars_companiesRow['type_ofFee'] == 3){ ?>
-											Normal & Additional
-										<?php }elseif($registrars_companiesRow['type_ofFee'] == 4){ ?>
-											Total
-										<?php }else{} ?></td>
-										<td><?= $registrars_companiesRow['amount']?></td>
-										<td><?= $registrars_companiesRow['user_name']?></td>
-										<td>
-											<?php if($registrars_companiesRow['challan_type']=='image/jpg' || $registrars_companiesRow['challan_type']=='image/png' || $registrars_companiesRow['challan_type']=='image/jpeg'){ ?>
-								
-											<a href="<?php echo base_url('uploads/roc_img/'.$registrars_companiesRow['roc_challan']) ?>" target="_blank" class=""><img src="<?= base_url('uploads/roc_img/'.$registrars_companiesRow['roc_challan'])?>" width="60" height="60" style="object-fit:cover;"></a>
-									
-											<?php } elseif($registrars_companiesRow['challan_type'] =='application/pdf' || $registrars_companiesRow['challan_type'] =='application/docx') { ?>
-												<a href="<?= base_url('uploads/roc_img/'.$registrars_companiesRow['roc_challan'])?>" target="_blank"><i class="fa fa-file-pdf" style="font-size:40px;color:red;"></i></a>
-											<?php }else{} ?>
-										</td>
-										<td>
-										<?php if($registrars_companiesRow['form_type']=='image/jpg' || $registrars_companiesRow['form_type']=='image/png' || $registrars_companiesRow['form_type']=='image/jpeg'){ ?>
+                           	</a>
+                        </div>
+                        <!-- Card body -->
+                        <div id="collapseThree3" class="collapse" role="tabpanel" aria-labelledby="headingThree3"
+                           data-parent="#accordionEx3">
+                           <div class="card-body">
+                              <div class="clearfix">
+                                 <div class="col-lg-12 col-md-6 col-sm-6 col-xs-12">
+                                    <div class="card bg-c-darkred update-card">
+                                       <div class="card-block">
+                                          <div class="align-items-end">
+												<?php $this->load->view('document/accounts_view'); ?>			
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- Accordion card -->
+                  </div>
 
-											<a href="<?php echo base_url('uploads/roc_img/'.$registrars_companiesRow['roc_form']); ?>" target="_blank" class=""><img src="<?= base_url('uploads/roc_img/'.$registrars_companiesRow['roc_form'])?>" width="60" height="60" style="object-fit:cover;"></a>
 
-										<?php } elseif($registrars_companiesRow['form_type'] =='application/pdf' || $registrars_companiesRow['form_type'] =='application/docx') { ?>
-										<a href="<?= base_url('uploads/roc_img/'.$registrars_companiesRow['roc_form'])?>" target="_blank"><i class="fa fa-file-pdf" style="font-size:40px;color:red;"></i></a>
-					    				<?php } ?>
-										</td>
-										<td>
-										<?php if($registrars_companiesRow['additional_file1_type']=='image/jpg' || $registrars_companiesRow['additional_file1_type']=='image/png' || $registrars_companiesRow['additional_file1_type']=='image/jpeg'){ ?>
-								
-											<a href="<?php echo base_url('uploads/roc_img/'.$registrars_companiesRow['additional_file_1']) ?>" target="_blank" class=""><img src="<?= base_url('uploads/roc_img/'.$registrars_companiesRow['additional_file_1'])?>" width="60" height="60" style="object-fit:cover;"></a>
-									
-											<?php } elseif($registrars_companiesRow['additional_file1_type'] =='application/pdf' || $registrars_companiesRow['additional_file1_type'] =='application/docx') { ?>
-												<a href="<?= base_url('uploads/roc_img/'.$registrars_companiesRow['additional_file_1'])?>" target="_blank"><i class="fa fa-file-pdf" style="font-size:40px;color:red;"></i></a>
-											<?php }else{} ?>
-										</td>
-										<td>
-										<?php if($registrars_companiesRow['additional_file2_type']=='image/jpg' || $registrars_companiesRow['additional_file2_type']=='image/png' || $registrars_companiesRow['additional_file2_type']=='image/jpeg'){ ?>
-								
-										<a href="<?php echo base_url('uploads/roc_img/'.$registrars_companiesRow['additional_file_2']) ?>" target="_blank" class=""><img src="<?= base_url('uploads/roc_img/'.$registrars_companiesRow['additional_file_2'])?>" width="60" height="60" style="object-fit:cover;"></a>
-								
-										<?php } elseif($registrars_companiesRow['additional_file2_type'] =='application/pdf' || $registrars_companiesRow['additional_file2_type'] =='application/docx') { ?>
-											<a href="<?= base_url('uploads/roc_img/'.$registrars_companiesRow['additional_file_2'])?>" target="_blank"><i class="fa fa-file-pdf" style="font-size:40px;color:red;"></i></a>
-										<?php }else{} ?>
-										</td>
-										<td><?php if($registrars_companiesRow['status'] == 1){ ?>
-											<span class = "btn btn-primary" style="box-shadow:none !important; text-transform:uppercase;">Completed</span>
-										<?php }elseif($registrars_companiesRow['status'] == 3){ ?>
-											<span class="btn btn-success" style="box-shadow:none !important; text-transform:uppercase;">Approved</span>	
-										<?php }else{ ?>
-											<span class="btn btn-info" style="box-shadow:none !important; text-transform:uppercase;">Pending</span>	
-										<?php } ?>
-										</td>
-										<td>
-										<a  href="javascript:void(0);" data-registrars_companies_Id="<?=  $registrars_companiesRow['id'];?>" data-folder_assign_id = "<?= $registrars_companiesRow['folder_assign_id'] ?>" class="btn btn-default Registrars_companiesStatus" title="Status"><button type="button" class="btn btn-default" style="background-color: #023e8a; color:#fff" data-toggle="tooltip"><i class="fas fa-tasks"></i></button></a>
-										
-										<a href="javascript:void(0);" data-registrars_companies_Id="<?=  $registrars_companiesRow['id'];?>" data-folder_assign_id = "<?= $registrars_companiesRow['folder_assign_id'] ?>" class="btn btn-default openRegistrars_companies" title="Capture"><button type="button" class="btn btn-default" onclick="on_camera()" style="background-color: #023e8a; color:#fff" data-toggle="tooltip"><i class="fa fa-camera"></i></button></a>
-										</td>
-									</tr>
-									<?php endforeach; ?>
-								</tbody>
-								</table>
-							</div>
-
-						</div>						
+				  <div class="accordion md-accordion" id="accordionEx4" role="tablist" aria-multiselectable="true">
+                     <!-- Accordion card -->
+                     <div class="card">
+                        <!-- Card header -->
+                        <div class="card-header" role="tab" id="headin2gThree4" style="background-color: #00b0bb;">
+                           	<a class="collapsed" data-toggle="collapse" data-parent="#accordionEx4" href="#collapseThree4"
+                              aria-expanded="false" aria-controls="collapseThree4" style="color: #FFFFFF;text-decoration: none;">
+								<div>
+									<h2>KYC DOCUMENTS:<i class="fa fa-angle-down rotate-icon" style="float:right;"></i></h2>
+								</div>
+                           	</a>
+                        </div>
+                        <!-- Card body -->
+                        <div id="collapseThree4" class="collapse" role="tabpanel" aria-labelledby="headingThree4"
+                           data-parent="#accordionEx4">
+                           <div class="card-body">
+                              <div class="clearfix">
+                                 <div class="col-lg-12 col-md-6 col-sm-6 col-xs-12">
+                                    <div class="card bg-c-darkred update-card">
+                                       <div class="card-block">
+                                          <div class="align-items-end">
+												<?php $this->load->view('document/kycView'); ?>			
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- Accordion card -->
+                  </div>
 
 						
                   <!-- <form action="<?= base_url('document/dragDropUpload/' . $project_id); ?>" class="dropzone" method="post"></form> -->
@@ -333,240 +458,9 @@
 </div>
 
 
- <!-- Modal -->
- <div class="modal fade" id="rocModal" tabindex="-1" role="dialog" aria-labelledby="rocModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="rocModalLabel">Registrars Of Companies</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-			<form action="<?= base_url('document/post_add_registrars_companies')?>" method="post" enctype="multipart/form-data">
-				<?php $folderid = $this->uri->segment(3); ?>
-				<input type="hidden" class="form-control" name="folderid" value = "<?php echo $folderid; ?>">
-
-                <div class="card-body">
-						
-						<div class="form-group">
-							<label for="exampleInputPassword1">ASSIGN USER</label>
-							<select class="form-control" name="created_by">
-								<?php foreach($employees as $employee): ?>
-								<option value="<?= $employee['id']?>"><?= $employee['name']?></option>
-								<?php endforeach; ?> 
-							</select>
-						</div>
-					
-						<div class="row">
-							<div class="col-md-6">
-								<div class="form-group">
-									<label for="exampleInputPassword1">COMPANY NAME</label>
-									<select class="form-control" name="company_name">
-										<?php foreach($employers as $employer): ?>
-										<option value="<?= $employer['id']?>"><?= $employer['company_name']?></option>
-										<?php endforeach; ?> 
-									</select>
-								</div>
-							</div>
-							<div class="col-md-6">
-								<label for="exampleInputPassword1">FORM NAME</label>
-								<select class="form-control" name="form_number">
-									<option>Select Form Number</option>
-									<?php foreach($form_number as $form_numberRow): ?>
-									<option value="<?= $form_numberRow['id']?>"><?= $form_numberRow['form_number']?></option>
-									<?php endforeach; ?> 
-								</select>
-							</div>
-						</div>
-					
-					<div class="row">
-						<div class="col-md-6">
-							<div class="form-group">
-								<label for="">SRN(4 to 10 characters)</label>
-								<input type="text" class="form-control srnCheck" name="srn" placeholder="Enter SRN" minlength="9" required size="9">
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<label for="">STATUTORY DUE DATE</label>
-								<input type="date" class="form-control" name="statutory_due_date">
-							</div>
-						</div>
-					</div>     
-
-					<div class="row">
-						<div class="col-md-6">
-							<div class="form-group">
-								<label for="">YEAR /PERIOD</label>
-								<input type="date" class="form-control" name="year_period">
-							</div>
-						</div>
-						<div class="col-md-6">		
-							<div class="form-group">
-								<label for="exampleInputPassword1">DATE OF FILING</label>
-								<input type="date" class="form-control" name="date_of_filing">
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-6">
-							<div class="form-group">
-								<label for="">Type of Fee</label>
-								<select class="form-control" name="type_ofFee">
-								<option>Select Type of Fee</option>
-								<option value="1">Normal</option>
-								<option value="2">Additional</option>
-								<option value="3">Normal & Additional</option>
-								<option value="4">Total</option>
-							</select>
-							</div>
-						</div>
-						<div class="col-md-6">		
-							<div class="form-group">
-								<label for="exampleInputPassword1">AMOUNT</label>
-								<input type="text" class="form-control" name="amount" placeholder="Enter amount">
-							</div>
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="col-md-6">
-							<div class="form-group">
-								<label for="exampleFormControlFile1">Challan</label>
-								<input type="file" name="roc_challan" class="form-control-file">
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<label for="exampleFormControlFile1">ROC FORM</label>
-								<input type="file" name="roc_form" class="form-control-file">
-							</div>
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="col-md-6">
-							<div class="form-group">
-								<label for="exampleFormControlFile1">Additional File-1</label>
-								<input type="file" name="additional_file_1" class="form-control-file">
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<label for="exampleFormControlFile1">Additional File-2</label>
-								<input type="file" name="additional_file_2" class="form-control-file">
-							</div>
-						</div>
-					</div>
-					
-                </div>
-                <!-- /.card-body -->
-                <div class="card-footer">
-                  <div class="popup_error" style="font-size: 13px;color:#CC0000;"></div>
-                  <button type="submit" class="btn btn-primary btn-block">Submit</button>
-                </div>
-              </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-	<!-- Modal -->
-	<div class="modal fade" id="addFromNumberModal" tabindex="-1" role="dialog" aria-labelledby="addFromNumberModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="rocModalLabel">ROC Form Number</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-			<form action="<?= base_url('document/post_add_form_number')?>" method="post" enctype="multipart/form-data">
-				<?php $folderid = $this->uri->segment(3); ?>
-				<input type="hidden" class="form-control" name="folderid" value = "<?php echo $folderid; ?>">
-
-                <div class="card-body">
-					<div class="row">
-						<div class="col-md-6">
-							<div class="form-group">
-								<label for="">FORM NUMBER</label>
-								<input type="text" class="form-control" name="form_number" placeholder="Enter From Number">
-							</div>
-						</div>
-					</div>     
-                </div>
-                <!-- /.card-body -->
-                <div class="card-footer">
-                  <div class="popup_error" style="font-size: 13px;color:#CC0000;"></div>
-                  <button type="submit" class="btn btn-primary btn-block">Submit</button>
-                </div>
-              </form>
-
-			  	<table class="table table-bordered table-striped" style="overflow: auto; width: 100%; height: 100px; text-align: center;">
-					<thead style="background-color:#023047; color: #fff;position: sticky;top: 0;">
-					<tr>
-						<th>Form Number </th>
-					</tr>
-					</thead>
-					<tbody>
-						<?php foreach($form_number as $allform_numberRow): ?>
-						<tr style="background-color: #fff; color: #000">
-							<td><?= $allform_numberRow['form_number']?>&nbsp;&nbsp;<a href="<?= base_url('document/delete_form_number/'.$allform_numberRow['id'].'/'.$folderid)?>"><i class="fa fa-trash" style="color: red;"></i></a></td>
-						</tr>
-						<?php endforeach; ?>
-					</tbody>
-				</table>
-
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
+	<?php $this->load-> view('document/income_taxModal'); ?>
 
 	
-	<div id="Registrars_companiesStatusModal" class="modal fade" tabindex="-1">
-		<div class="modal-dialog modal-sm">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title">Status</h5>
-					<button type="button" class="close close_btn" data-dismiss="modal" aria-hidden="true">&times;</button>
-				</div>
-				<div class="modal-body">
-					<form action="<?php echo base_url(); ?>Document/updateroc_status" method="post" enctype="multipart/form-data">
-					
-						<?php $folderid = $this->uri->segment(3); ?>
-						<input type="hidden" class="form-control" name="folderid" value = "<?php echo $folderid; ?>">
-						<input type="hidden" name="rocStatusId" class="rocStatusId form-control" value=""/>
-						
-						<div class = "form-group">
-							<select class="form-control" name="status_name" data-placeholder="Select Status Name" >
-								<option>Select Status</option>
-								<option value="1">Completed</option>
-								<option value="2">Pending</option>
-								<option value="3">Approved</option>
-							</select>
-						</div>
-						<input type="submit" class="btn btn-primary btn-custom" value="submit" style="width: 120px;">
-					</form>
-
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary close_btn" data-dismiss="modal">Cancel</button>
-					
-				</div>
-			</div>
-		</div>
-	</div>
-
 
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">	
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">	
@@ -658,6 +552,29 @@
 			}
 		});
 
+		$(".form_number").change(function() {	
+
+			var form_number = $(this).val();
+		
+			//alert(group_name);
+			var folder_id = '<?php echo $this->uri->segment(3); ?>';
+
+			if (form_number == "") {
+					$(".statutoryduedate").val("");
+			}
+			else {	
+				$.ajax({	
+						type: "GET",	
+						url: "<?= base_url("/document/showStatutoryDueDate")?>",
+						data: { form_number: form_number, folder_id :folder_id },
+						success: function(data) {
+							//alert(data);		
+							$(".statutoryduedate").val(data);
+						}
+				});
+			}
+		});
+
 		$(".dateTextField1, .dateTextField2").change(function() {			
 			var from_date = $('.dateTextField1').val();
 			var to_date = $('.dateTextField2').val();
@@ -702,6 +619,35 @@
 						
         });
 
+		$(".professional_taxbutton").click(function(){
+          	$("#professional_taxModal").modal('show');
+				var accountsID = $(this).attr('data-accountsID');
+				var Tax_date = $(this).attr('data-Tax_date');
+				var Tax_amount = $(this).attr('data-Tax_amount');
+     			$("#professional_taxModal .accounts_id").val( accountsID );
+				$("#professional_taxModal .professionalTax_amount").val( Tax_amount );
+				$("#professional_taxModal .professionalTax_date").val( Tax_date );
+					
+        });
+			$(".close_btn").click(function(){
+			$("#professional_taxModal").modal("hide"); 
+						
+        });
+
+		$(".trade_licenceButton").click(function(){
+          	$("#trade_licenceModal").modal('show');
+				var accountsID = $(this).attr('data-accountsID');
+				var tl_date = $(this).attr('data-trade_licence_date');
+				var tl_amount = $(this).attr('data-trade_licence_amount');
+     			$("#trade_licenceModal .accounts_id").val( accountsID );
+				$("#trade_licenceModal .trade_licence_amount").val( tl_amount );
+				$("#trade_licenceModal .trade_licence_date").val( tl_date );
+					
+        });
+			$(".close_btn").click(function(){
+			$("#trade_licenceModal").modal("hide"); 
+						
+        });
 
 		$(".srnCheck").keyup(function(e){
 		e.preventDefault();

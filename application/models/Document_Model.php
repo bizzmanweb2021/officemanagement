@@ -200,11 +200,36 @@ class Document_Model extends CI_Model
         $this->db->where('registrars_of_companies.folder_assign_id',$id);
         return $this->db->get()->result_array();
     }
+	function all_income_tax($id)
+    {
+        $this->db->select('income_tax.*,companies.company_name');
+        $this->db->from('income_tax');
+		$this->db->join('companies','companies.id = income_tax.company_id');
+        $this->db->where('income_tax.folder_id',$id);
+        return $this->db->get()->result_array();
+    }
+	function all_accounts($id){
+		$this->db->select('accounts.*,accounts.id as account_id,companies.company_name,professional_tax.*,trade_licence.*');
+        $this->db->from('accounts');
+		$this->db->join('companies','companies.id = accounts.company_id','LEFT');
+		$this->db->join('professional_tax','professional_tax.accounts_id = accounts.id','LEFT');
+		$this->db->join('trade_licence','trade_licence.id = accounts.id','LEFT');
+        $this->db->where('accounts.folder_id',$id);
+		
+        return $this->db->get()->result_array();
+	}
 	
 	function getAllform_number()
 	{
 		$this->db->select('roc_form_number.*');
 		$this->db->from('roc_form_number');
 		return $this->db->get()->result_array();
+	}
+	function getAll_kycDoc($id){
+		$this->db->select('kyc_documents.*,companies.company_name');
+        $this->db->from('kyc_documents');
+		$this->db->join('companies','companies.id = kyc_documents.company_id');
+        $this->db->where('kyc_documents.folder_id',$id);
+        return $this->db->get()->result_array();
 	}
 }

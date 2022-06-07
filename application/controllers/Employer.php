@@ -130,55 +130,42 @@ class Employer extends CI_Controller
 	}
 	public function editEmployer()
 	{
-	    if($this->session->has_userdata('user')!=false)
-	    {
-	        if($this->uri->segment(3)!="")
-	        {
-	            $data['employerId']=$this->uri->segment(3);
-	            $this->layout->view('employer/employer-edit',$data);
-	        }
-	        else
-	        {
-	            redirect('dashboard');
-	        }
-	    }
-	    else
-	    {
-	        redirect('dashboard');
-	    }
+	
+		$employerId = $this->uri->segment(3);
+		$data['groups']=$this->Group->getAllGroups();
+		$data['editEmployers']=$this->Employer->getEditEmployers($employerId);
+		$this->layout->view('employer/edit_employer',$data);
+		
 	}
 	
 	public function post_edit_employer()
 	{
-	    if($this->session->has_userdata('user')!=false)
-	    {
-	        if($this->uri->segment(3)!="")
-	        {
-	            $employerId=$this->uri->segment(3);
-	            extract($_POST);
-	            $data=array('contact_person'=>$contact,
-	            	        'email'=>$email,
-	                        'modified_at'=>date('Y-m-d H:i:s'));
-	            $clean_data=$this->security->xss_clean($data);
-                $result=$this->Main->update('id',$employerId,$data,'companies');
-                if($result==true)
-                {
-                    redirect('employer');
-                }
-                else
-                {
-                    redirect('employer');
-                }
-	        }
-	        else
-	        {
-	            redirect('dashboard');
-	        }
-	    }
-	    else
-	    {
-	        redirect('dashboard');
-	    }
+		$company_id = $this->input->post('company_id');
+		extract($_POST);
+		$data=array(
+					'company_vertical'=>$group,
+					'company_name'=>$company_name,
+					'contact_person'=>$contact_person,
+					'registered_office_address'=>$registered_office_address,
+					'corporate_office_address'=>$corporate_office_address,
+					'admin_office_address'=>$admin_office_address,
+					'factory_address'=>$factory_address,
+					'branch_address'=>$branch_address,
+					'email'=>$email,
+					'website'=>$website,
+					'office_number'=>$office_number,
+					'mobile_number'=>$mobile_number,
+					'work_of_client'=>$work_of_client,
+					'modified_at'=>date('Y-m-d H:i:s'));
+
+		$clean_data=$this->security->xss_clean($data);
+			
+		$result=$this->Main->update('id',$company_id,$clean_data,'companies');
+			if($result == true){
+				redirect('employer/editEmployer/'.$company_id);
+			}
+		
+		
 	}
 	public function deleteEmployer()
     {

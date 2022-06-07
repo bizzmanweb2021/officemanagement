@@ -43,6 +43,9 @@ class Document extends CI_Controller
 		$data['form_number'] = $this->Document->getAllform_number();
 		$id = $this->uri->segment(3);
 		$data['registrars_companies'] = $this->Document->all_registrars_companies($id);
+		$data['income_tax'] = $this->Document->all_income_tax($id);
+		$data['all_accounts'] = $this->Document->all_accounts($id);
+		$data['all_kycDoc'] = $this->Document->getAll_kycDoc($id);
 		$data['folder'] = $this->Project->getData($id);
 		$data['file']=$this->Document->getDocImages($this->session->userdata('user'),$id);
 		$data['company_verticals'] = $this->Document->getCompany_verticals();
@@ -283,6 +286,23 @@ class Document extends CI_Controller
 		echo json_encode( $srnCheck_rownum );
 
 	}
+	public function showStatutoryDueDate(){
+		
+		$rocform_number = $_GET['form_number'];
+		//$date = date("Y-m-d");
+		
+		$rocform_number_sql  = "SELECT roc_form_number.statutory_due_date 
+		FROM roc_form_number 
+		WHERE roc_form_number.id = '".$rocform_number."'"; 
+		
+		$rocform_number_query = $this->db->query($rocform_number_sql);
+		$rocform_date = $rocform_number_query->result_array();
+		foreach($rocform_date as $rocform_dateRow){
+			$statutory_due_date = $rocform_dateRow['statutory_due_date'];
+		}
+		echo $statutory_due_date;
+
+	}
 	public function post_add_registrars_companies()
 	{
 		$folderid = $this->input->post("folderid");
@@ -292,7 +312,7 @@ class Document extends CI_Controller
 			'form_number_id' => $form_number,
 			'company_name' => $company_name,
 			'form_name' => $form_name,
-			'statutory_due_date' => $statutory_due_date,
+			'statutory_due_date' => $roc_due_date,
 			'created_by' => $created_by,
 			'year_period' => $year_period,
 			'date_of_filing'	=> $date_of_filing,
@@ -439,7 +459,8 @@ class Document extends CI_Controller
 		$folderid = $this->input->post("folderid");
 		extract($_POST);
 		$data = array(
-			'form_number' => $form_number
+			'form_number' => $form_number,
+			'statutory_due_date' => $statutory_due_date,
 		);
 
 		$insert = $this->Document->addForm_number($data);
@@ -475,5 +496,642 @@ class Document extends CI_Controller
 		{
 			redirect('document/file_upload/'.$folderid);
 		}
+	}
+	public function post_add_IncomeTax(){
+		$folderid = $this->input->post("folderid");
+		extract($_POST);
+		$data = array(
+			'folder_id' => $folderid,
+			'company_id' => $company_name,
+			'date_of_filing' => $date_of_filing,
+			'asstment_year' => $year_period,
+			'acknowledement_no' => $acknowledement_no,
+			'computation' => $computation
+		);
+
+		$insert = $this->Main->insert('income_tax',$data);
+		$insert_id = $this->db->insert_id();
+
+		$this->load->library('upload');
+		//echo $_FILES['roc_challan']['name'];exit;
+		if($_FILES['XML_file']['name'] != '')
+		{
+
+			$_FILES['file']['name']       = $_FILES['XML_file']['name'];
+			$_FILES['file']['type']       = $_FILES['XML_file']['type'];
+			$_FILES['file']['tmp_name']   = $_FILES['XML_file']['tmp_name'];
+			$_FILES['file']['error']      = $_FILES['XML_file']['error'];
+			$_FILES['file']['size']       = $_FILES['XML_file']['size'];
+
+			// File upload configuration
+			$uploadPath = 'uploads/income_tax/';
+			$config['upload_path'] = $uploadPath;
+			$config['allowed_types'] = 'jpg|jpeg|png|pdf|docx';
+			$config['max_size'] = ""; // Can be set to particular file size , here it is 2 MB(2048 Kb)
+			$config['max_height'] = "";
+			$config['max_width'] = "";
+
+			// Load and initialize upload library
+			$this->load->library('upload', $config);
+			$this->upload->initialize($config);
+
+			// Upload file to server
+			if($this->upload->do_upload('file')){
+				// Uploaded file data
+				$imageData = $this->upload->data();
+				$uploadImgData['XML_file'] = $imageData['file_name'];
+			}
+			$updatechallan =$this->Main->update('id',$insert_id, $uploadImgData,'income_tax');         
+		} 
+
+		if($_FILES['balance_sheet']['name'] != '')
+		{
+
+			$_FILES['file']['name']       = $_FILES['balance_sheet']['name'];
+			$_FILES['file']['type']       = $_FILES['balance_sheet']['type'];
+			$_FILES['file']['tmp_name']   = $_FILES['balance_sheet']['tmp_name'];
+			$_FILES['file']['error']      = $_FILES['balance_sheet']['error'];
+			$_FILES['file']['size']       = $_FILES['balance_sheet']['size'];
+
+			// File upload configuration
+			$uploadPath = 'uploads/income_tax/';
+			$config['upload_path'] = $uploadPath;
+			$config['allowed_types'] = 'jpg|jpeg|png|pdf|docx';
+			$config['max_size'] = ""; // Can be set to particular file size , here it is 2 MB(2048 Kb)
+			$config['max_height'] = "";
+			$config['max_width'] = "";
+
+			// Load and initialize upload library
+			$this->load->library('upload', $config);
+			$this->upload->initialize($config);
+
+			// Upload file to server
+			if($this->upload->do_upload('file')){
+				// Uploaded file data
+				$imageData = $this->upload->data();
+				$updateroc_formData['balance_sheet'] = $imageData['file_name'];
+			}
+			$updateroc_form =$this->Main->update('id',$insert_id, $updateroc_formData,'income_tax');         
+		} 
+		if($_FILES['profit_and_loss']['name'] != '')
+		{
+
+			$_FILES['file']['name']       = $_FILES['profit_and_loss']['name'];
+			$_FILES['file']['type']       = $_FILES['profit_and_loss']['type'];
+			$_FILES['file']['tmp_name']   = $_FILES['profit_and_loss']['tmp_name'];
+			$_FILES['file']['error']      = $_FILES['profit_and_loss']['error'];
+			$_FILES['file']['size']       = $_FILES['profit_and_loss']['size'];
+
+			// File upload configuration
+			$uploadPath = 'uploads/income_tax/';
+			$config['upload_path'] = $uploadPath;
+			$config['allowed_types'] = 'jpg|jpeg|png|pdf|docx';
+			$config['max_size'] = ""; // Can be set to particular file size , here it is 2 MB(2048 Kb)
+			$config['max_height'] = "";
+			$config['max_width'] = "";
+
+			// Load and initialize upload library
+			$this->load->library('upload', $config);
+			$this->upload->initialize($config);
+
+			// Upload file to server
+			if($this->upload->do_upload('file')){
+				// Uploaded file data
+				$imageData = $this->upload->data();
+				$updateroc_additionalData['profit_and_loss'] = $imageData['file_name'];
+			}
+			$updateroc_additional1 =$this->Main->update('id',$insert_id, $updateroc_additionalData,'income_tax');         
+		}
+
+		if ($insert == true || $updatechallan == true || $updateroc_form == true || $updateroc_additional1 == true) {
+			return redirect('document/file_upload/'.$folderid);
+		} else {
+			$errorUploadType = 'Some problem occurred, please try again.';
+		}
+	}
+	public function delete_incomeTax(){
+
+		$taxid = $this->uri->segment(4);
+		$folderid = $this->uri->segment(3);
+		$result=$this->Main->delete('id',$taxid,'income_tax');
+		if($result==true)
+		{
+			 redirect('document/file_upload/'.$folderid);
+		}
+	}
+	public function post_add_accounts(){
+		$folderid = $this->input->post("folderid");
+		extract($_POST);
+		$data = array(
+			'folder_id' => $folderid,
+			'company_id' => $company_name,
+			'loan_confirmation' => $loan_confirmation,
+			'trail_balance' => $trail_balance,
+			'memorandum_article_association' => $memorandum_article_association
+		);
+
+		$insert = $this->Main->insert('accounts',$data);
+		$insert_id = $this->db->insert_id();
+
+		$this->load->library('upload');
+		//echo $_FILES['roc_challan']['name'];exit;
+		if($_FILES['bank_statement']['name'] != '')
+		{
+
+			$_FILES['file']['name']       = $_FILES['bank_statement']['name'];
+			$_FILES['file']['type']       = $_FILES['bank_statement']['type'];
+			$_FILES['file']['tmp_name']   = $_FILES['bank_statement']['tmp_name'];
+			$_FILES['file']['error']      = $_FILES['bank_statement']['error'];
+			$_FILES['file']['size']       = $_FILES['bank_statement']['size'];
+
+			// File upload configuration
+			$uploadPath = 'uploads/accounts/';
+			$config['upload_path'] = $uploadPath;
+			$config['allowed_types'] = 'jpg|jpeg|png|pdf|docx';
+			$config['max_size'] = ""; // Can be set to particular file size , here it is 2 MB(2048 Kb)
+			$config['max_height'] = "";
+			$config['max_width'] = "";
+
+			// Load and initialize upload library
+			$this->load->library('upload', $config);
+			$this->upload->initialize($config);
+
+			// Upload file to server
+			if($this->upload->do_upload('file')){
+				// Uploaded file data
+				$imageData = $this->upload->data();
+				$uploadImgData['bank_statement'] = $imageData['file_name'];
+			}
+			$updatechallan =$this->Main->update('id',$insert_id, $uploadImgData,'accounts');         
+		} 
+
+		if($_FILES['balance_sheet']['name'] != '')
+		{
+
+			$_FILES['file']['name']       = $_FILES['balance_sheet']['name'];
+			$_FILES['file']['type']       = $_FILES['balance_sheet']['type'];
+			$_FILES['file']['tmp_name']   = $_FILES['balance_sheet']['tmp_name'];
+			$_FILES['file']['error']      = $_FILES['balance_sheet']['error'];
+			$_FILES['file']['size']       = $_FILES['balance_sheet']['size'];
+
+			// File upload configuration
+			$uploadPath = 'uploads/accounts/';
+			$config['upload_path'] = $uploadPath;
+			$config['allowed_types'] = 'jpg|jpeg|png|pdf|docx';
+			$config['max_size'] = ""; // Can be set to particular file size , here it is 2 MB(2048 Kb)
+			$config['max_height'] = "";
+			$config['max_width'] = "";
+
+			// Load and initialize upload library
+			$this->load->library('upload', $config);
+			$this->upload->initialize($config);
+
+			// Upload file to server
+			if($this->upload->do_upload('file')){
+				// Uploaded file data
+				$imageData = $this->upload->data();
+				$updateroc_formData['balance_sheet'] = $imageData['file_name'];
+			}
+			$updateroc_form =$this->Main->update('id',$insert_id, $updateroc_formData,'accounts');         
+		} 
+		if($_FILES['profit_and_loss']['name'] != '')
+		{
+
+			$_FILES['file']['name']       = $_FILES['profit_and_loss']['name'];
+			$_FILES['file']['type']       = $_FILES['profit_and_loss']['type'];
+			$_FILES['file']['tmp_name']   = $_FILES['profit_and_loss']['tmp_name'];
+			$_FILES['file']['error']      = $_FILES['profit_and_loss']['error'];
+			$_FILES['file']['size']       = $_FILES['profit_and_loss']['size'];
+
+			// File upload configuration
+			$uploadPath = 'uploads/accounts/';
+			$config['upload_path'] = $uploadPath;
+			$config['allowed_types'] = 'jpg|jpeg|png|pdf|docx';
+			$config['max_size'] = ""; // Can be set to particular file size , here it is 2 MB(2048 Kb)
+			$config['max_height'] = "";
+			$config['max_width'] = "";
+
+			// Load and initialize upload library
+			$this->load->library('upload', $config);
+			$this->upload->initialize($config);
+
+			// Upload file to server
+			if($this->upload->do_upload('file')){
+				// Uploaded file data
+				$imageData = $this->upload->data();
+				$updateroc_additionalData['profit_and_loss'] = $imageData['file_name'];
+			}
+			$updateroc_additional1 =$this->Main->update('id',$insert_id, $updateroc_additionalData,'accounts');         
+		}
+		if($_FILES['vouchers']['name'] != '')
+		{
+
+			$_FILES['file']['name']       = $_FILES['vouchers']['name'];
+			$_FILES['file']['type']       = $_FILES['vouchers']['type'];
+			$_FILES['file']['tmp_name']   = $_FILES['vouchers']['tmp_name'];
+			$_FILES['file']['error']      = $_FILES['vouchers']['error'];
+			$_FILES['file']['size']       = $_FILES['vouchers']['size'];
+
+			// File upload configuration
+			$uploadPath = 'uploads/accounts/';
+			$config['upload_path'] = $uploadPath;
+			$config['allowed_types'] = 'jpg|jpeg|png|pdf|docx';
+			$config['max_size'] = ""; // Can be set to particular file size , here it is 2 MB(2048 Kb)
+			$config['max_height'] = "";
+			$config['max_width'] = "";
+
+			// Load and initialize upload library
+			$this->load->library('upload', $config);
+			$this->upload->initialize($config);
+
+			// Upload file to server
+			if($this->upload->do_upload('file')){
+				// Uploaded file data
+				$imageData = $this->upload->data();
+				$updateroc_additionalData['vouchers'] = $imageData['file_name'];
+			}
+			$updateroc_additional2 =$this->Main->update('id',$insert_id, $updateroc_additionalData,'accounts');         
+		}
+
+		if ($insert == true || $updatechallan == true || $updateroc_form == true || $updateroc_additional1 == true || $updateroc_additional2 = true) {
+			return redirect('document/file_upload/'.$folderid);
+		} else {
+			$errorUploadType = 'Some problem occurred, please try again.';
+		}
+	}
+
+	public function post_add_professional_tax(){
+
+		$folderid = $this->input->post("folderid");
+		$accounts_id = $this->input->post("accounts_id");
+		extract($_POST);
+		$data = array(
+			'accounts_id' => $accounts_id,
+			'professionalTax_amount' => $professionalTax_amount,
+			'professionalTax_date' => $professionalTax_date
+		);
+
+		$professional_tax_query = $this->db->query("SELECT * FROM professional_tax WHERE professional_tax.accounts_id = '".$accounts_id."'");
+		$professional_tax_rownum = $professional_tax_query->num_rows();
+
+		if($professional_tax_rownum > 0){
+			$this->db->where('accounts_id', $accounts_id);
+			$this->db->update('professional_tax', $data);
+		}else{
+			$this->db->insert('professional_tax', $data);
+		}
+
+		/*$insert = $this->Main->insert('professional_tax',$data);
+		$insert_id = $this->db->insert_id();*/
+
+		$this->load->library('upload');
+		if($_FILES['professionalTax_challan']['name'] != '')
+		{
+
+			$_FILES['file']['name']       = $_FILES['professionalTax_challan']['name'];
+			$_FILES['file']['type']       = $_FILES['professionalTax_challan']['type'];
+			$_FILES['file']['tmp_name']   = $_FILES['professionalTax_challan']['tmp_name'];
+			$_FILES['file']['error']      = $_FILES['professionalTax_challan']['error'];
+			$_FILES['file']['size']       = $_FILES['professionalTax_challan']['size'];
+
+			// File upload configuration
+			$uploadPath = 'uploads/accounts/';
+			$config['upload_path'] = $uploadPath;
+			$config['allowed_types'] = 'jpg|jpeg|png|pdf|docx';
+			$config['max_size'] = ""; // Can be set to particular file size , here it is 2 MB(2048 Kb)
+			$config['max_height'] = "";
+			$config['max_width'] = "";
+
+			// Load and initialize upload library
+			$this->load->library('upload', $config);
+			$this->upload->initialize($config);
+
+			// Upload file to server
+			if($this->upload->do_upload('file')){
+				// Uploaded file data
+				$imageData = $this->upload->data();
+				$uploadImgData['professionalTax_challan'] = $imageData['file_name'];
+			} 
+			$updateroc_additional =$this->Main->update('accounts_id',$accounts_id, $uploadImgData,'professional_tax');      
+		} 
+
+		if ($insert == true || $updateroc_additional == true) {
+			return redirect('document/file_upload/'.$folderid);
+		} else {
+			$errorUploadType = 'Some problem occurred, please try again.';
+		}
+	}
+	public function post_add_trade_licence(){
+
+		$folderid = $this->input->post("folderid");
+		$accounts_id = $this->input->post("accounts_id");
+		extract($_POST);
+		$data = array(
+			'accounts_id' => $accounts_id,
+			'trade_licence_amount' => $trade_licence_amount,
+			'trade_licence_date' => $trade_licence_date
+		);
+
+		$trade_licence_query = $this->db->query("SELECT * FROM trade_licence WHERE trade_licence.accounts_id = '".$accounts_id."'");
+		$trade_licence_rownum = $trade_licence_query->num_rows();
+
+		if($trade_licence_rownum > 0){
+			$this->db->where('accounts_id', $accounts_id);
+			$this->db->update('trade_licence', $data);
+		}else{
+			$this->db->insert('trade_licence', $data);
+		}
+
+
+		$this->load->library('upload');
+		if($_FILES['trade_licence_challan']['name'] != '')
+		{
+
+			$_FILES['file']['name']       = $_FILES['trade_licence_challan']['name'];
+			$_FILES['file']['type']       = $_FILES['trade_licence_challan']['type'];
+			$_FILES['file']['tmp_name']   = $_FILES['trade_licence_challan']['tmp_name'];
+			$_FILES['file']['error']      = $_FILES['trade_licence_challan']['error'];
+			$_FILES['file']['size']       = $_FILES['trade_licence_challan']['size'];
+
+			// File upload configuration
+			$uploadPath = 'uploads/accounts/';
+			$config['upload_path'] = $uploadPath;
+			$config['allowed_types'] = 'jpg|jpeg|png|pdf|docx';
+			$config['max_size'] = ""; // Can be set to particular file size , here it is 2 MB(2048 Kb)
+			$config['max_height'] = "";
+			$config['max_width'] = "";
+
+			// Load and initialize upload library
+			$this->load->library('upload', $config);
+			$this->upload->initialize($config);
+
+			// Upload file to server
+			if($this->upload->do_upload('file')){
+				// Uploaded file data
+				$imageData = $this->upload->data();
+				$uploadImgData['trade_licence_challan'] = $imageData['file_name'];
+			} 
+			$updateroc_additional = $this->Main->update('accounts_id',$accounts_id, $uploadImgData,'trade_licence');      
+		} 
+
+		if ($insert == true || $updateroc_additional == true) {
+			return redirect('document/file_upload/'.$folderid);
+		} else {
+			$errorUploadType = 'Some problem occurred, please try again.';
+		}
+	}
+
+	public function delete_accounts(){
+
+		$accountsid = $this->uri->segment(4);
+		$folderid = $this->uri->segment(3);
+		$balance_sheet = 0;
+		$profit_and_loss = 0;
+		$bank_statement = 0;
+		$vouchers = 0;
+		$accounts_sql = "SELECT accounts.*
+			FROM accounts 
+			WHERE accounts.id = '".$accountsid."'";
+			$accounts_query = $this->db->query($accounts_sql);
+			foreach($accounts_query->result_array() as $accounts_row){
+				$balance_sheet = $accounts_row['balance_sheet'];
+				$profit_and_loss = $accounts_row['profit_and_loss'];
+				$bank_statement = $accounts_row['bank_statement'];
+				$vouchers = $accounts_row['vouchers'];
+			}
+			$balance_sheet_files = glob('./uploads/accounts/'.$balance_sheet); 
+			$profit_and_loss_file = glob('./uploads/accounts/'.$profit_and_loss); 
+			$bank_statement_file = glob('./uploads/accounts/'.$bank_statement); 
+			$vouchers_file = glob('./uploads/accounts/'.$vouchers); 
+			
+				if(is_file($balance_sheet_files)){
+					unlink($balance_sheet_files);
+				}
+				if(is_file($profit_and_loss_file)){
+					unlink($profit_and_loss_file);
+				}
+				if(is_file($bank_statement_file)){
+					unlink($bank_statement_file);
+				}
+				if(is_file($vouchers_file)){
+					unlink($vouchers_file);
+				}
+				   
+
+		$result=$this->Main->delete('id',$accountsid,'accounts');
+		$result2 =$this->Main->delete('accounts_id',$accountsid,'professional_tax');
+		$result3 =$this->Main->delete('accounts_id',$accountsid,'trade_licence');
+		
+			redirect('document/file_upload/'.$folderid);
+	}
+	public function post_add_kycDoc(){
+
+		$folderid = $this->input->post("folderid");
+		extract($_POST);
+		$data = array(
+			'folder_id' => $folderid,
+			'company_id' => $company_name
+		);
+
+		$insert = $this->Main->insert('kyc_documents',$data);
+		$insert_id = $this->db->insert_id();
+
+		$this->load->library('upload');
+		//echo $_FILES['roc_challan']['name'];exit;
+		if($_FILES['pan_card']['name'] != '')
+		{
+
+			$_FILES['file']['name']       = $_FILES['pan_card']['name'];
+			$_FILES['file']['type']       = $_FILES['pan_card']['type'];
+			$_FILES['file']['tmp_name']   = $_FILES['pan_card']['tmp_name'];
+			$_FILES['file']['error']      = $_FILES['pan_card']['error'];
+			$_FILES['file']['size']       = $_FILES['pan_card']['size'];
+
+			// File upload configuration
+			$uploadPath = 'uploads/kyc_doc/';
+			$config['upload_path'] = $uploadPath;
+			$config['allowed_types'] = 'jpg|jpeg|png|pdf|docx';
+			$config['max_size'] = ""; // Can be set to particular file size , here it is 2 MB(2048 Kb)
+			$config['max_height'] = "";
+			$config['max_width'] = "";
+
+			// Load and initialize upload library
+			$this->load->library('upload', $config);
+			$this->upload->initialize($config);
+
+			// Upload file to server
+			if($this->upload->do_upload('file')){
+				// Uploaded file data
+				$imageData = $this->upload->data();
+				$uploadImgData['pan_card'] = $imageData['file_name'];
+			}
+			$updatepan_card =$this->Main->update('id',$insert_id, $uploadImgData,'kyc_documents');         
+		} 
+
+		if($_FILES['aadhar_card']['name'] != '')
+		{
+
+			$_FILES['file']['name']       = $_FILES['aadhar_card']['name'];
+			$_FILES['file']['type']       = $_FILES['aadhar_card']['type'];
+			$_FILES['file']['tmp_name']   = $_FILES['aadhar_card']['tmp_name'];
+			$_FILES['file']['error']      = $_FILES['aadhar_card']['error'];
+			$_FILES['file']['size']       = $_FILES['aadhar_card']['size'];
+
+			// File upload configuration
+			$uploadPath = 'uploads/kyc_doc/';
+			$config['upload_path'] = $uploadPath;
+			$config['allowed_types'] = 'jpg|jpeg|png|pdf|docx';
+			$config['max_size'] = ""; // Can be set to particular file size , here it is 2 MB(2048 Kb)
+			$config['max_height'] = "";
+			$config['max_width'] = "";
+
+			// Load and initialize upload library
+			$this->load->library('upload', $config);
+			$this->upload->initialize($config);
+
+			// Upload file to server
+			if($this->upload->do_upload('file')){
+				// Uploaded file data
+				$imageData = $this->upload->data();
+				$updateroc_formData['aadhar_card'] = $imageData['file_name'];
+			}
+			$updateaadhar_card =$this->Main->update('id',$insert_id, $updateroc_formData,'kyc_documents');         
+		} 
+		if($_FILES['passport']['name'] != '')
+		{
+
+			$_FILES['file']['name']       = $_FILES['passport']['name'];
+			$_FILES['file']['type']       = $_FILES['passport']['type'];
+			$_FILES['file']['tmp_name']   = $_FILES['passport']['tmp_name'];
+			$_FILES['file']['error']      = $_FILES['passport']['error'];
+			$_FILES['file']['size']       = $_FILES['passport']['size'];
+
+			// File upload configuration
+			$uploadPath = 'uploads/kyc_doc/';
+			$config['upload_path'] = $uploadPath;
+			$config['allowed_types'] = 'jpg|jpeg|png|pdf|docx';
+			$config['max_size'] = ""; // Can be set to particular file size , here it is 2 MB(2048 Kb)
+			$config['max_height'] = "";
+			$config['max_width'] = "";
+
+			// Load and initialize upload library
+			$this->load->library('upload', $config);
+			$this->upload->initialize($config);
+
+			// Upload file to server
+			if($this->upload->do_upload('file')){
+				// Uploaded file data
+				$imageData = $this->upload->data();
+				$updateroc_additionalData['passport'] = $imageData['file_name'];
+			}
+			$updatepassport =$this->Main->update('id',$insert_id, $updateroc_additionalData,'kyc_documents');         
+		}
+		if($_FILES['voter_card']['name'] != '')
+		{
+
+			$_FILES['file']['name']       = $_FILES['voter_card']['name'];
+			$_FILES['file']['type']       = $_FILES['voter_card']['type'];
+			$_FILES['file']['tmp_name']   = $_FILES['voter_card']['tmp_name'];
+			$_FILES['file']['error']      = $_FILES['voter_card']['error'];
+			$_FILES['file']['size']       = $_FILES['voter_card']['size'];
+
+			// File upload configuration
+			$uploadPath = 'uploads/kyc_doc/';
+			$config['upload_path'] = $uploadPath;
+			$config['allowed_types'] = 'jpg|jpeg|png|pdf|docx';
+			$config['max_size'] = ""; // Can be set to particular file size , here it is 2 MB(2048 Kb)
+			$config['max_height'] = "";
+			$config['max_width'] = "";
+
+			// Load and initialize upload library
+			$this->load->library('upload', $config);
+			$this->upload->initialize($config);
+
+			// Upload file to server
+			if($this->upload->do_upload('file')){
+				// Uploaded file data
+				$imageData = $this->upload->data();
+				$updateroc_additionalData['voter_card'] = $imageData['file_name'];
+			}
+			$updatevoter_card = $this->Main->update('id',$insert_id, $updateroc_additionalData,'kyc_documents');         
+		}
+		if($_FILES['bank_passbook']['name'] != '')
+		{
+
+			$_FILES['file']['name']       = $_FILES['bank_passbook']['name'];
+			$_FILES['file']['type']       = $_FILES['bank_passbook']['type'];
+			$_FILES['file']['tmp_name']   = $_FILES['bank_passbook']['tmp_name'];
+			$_FILES['file']['error']      = $_FILES['bank_passbook']['error'];
+			$_FILES['file']['size']       = $_FILES['bank_passbook']['size'];
+
+			// File upload configuration
+			$uploadPath = 'uploads/kyc_doc/';
+			$config['upload_path'] = $uploadPath;
+			$config['allowed_types'] = 'jpg|jpeg|png|pdf|docx';
+			$config['max_size'] = ""; // Can be set to particular file size , here it is 2 MB(2048 Kb)
+			$config['max_height'] = "";
+			$config['max_width'] = "";
+
+			// Load and initialize upload library
+			$this->load->library('upload', $config);
+			$this->upload->initialize($config);
+
+			// Upload file to server
+			if($this->upload->do_upload('file')){
+				// Uploaded file data
+				$imageData = $this->upload->data();
+				$updateroc_additionalData['bank_passbook'] = $imageData['file_name'];
+			}
+			$updatebank_passbook =$this->Main->update('id',$insert_id, $updateroc_additionalData,'kyc_documents');         
+		}
+
+		if ($insert == true || $updatepan_card == true || $updateaadhar_card == true || $updatepassport == true || $updatevoter_card == true || $updatebank_passbook == true) {
+			return redirect('document/file_upload/'.$folderid);
+		} else {
+			$errorUploadType = 'Some problem occurred, please try again.';
+		}
+	}
+	public function delete_kycDoc(){
+
+		$kycid = $this->uri->segment(4);
+		$folderid = $this->uri->segment(3);
+
+		$kyc_sql = "SELECT kyc_documents.*
+			FROM kyc_documents 
+			WHERE kyc_documents.id = '".$kycid."'";
+			$kyc_query = $this->db->query($kyc_sql);
+			foreach($kyc_query->result_array() as $kyc_row){
+				$pan_card = $kyc_row['pan_card'];
+				$aadhar_card = $kyc_row['aadhar_card'];
+				$passport = $kyc_row['passport'];
+				$voter_card = $kyc_row['voter_card'];
+				$bank_passbook = $kyc_row['bank_passbook'];
+			}
+			$balance_sheet_files = glob('./uploads/kyc_doc/'.$pan_card); 
+			$aadhar_card_file = glob('./uploads/accounts/'.$aadhar_card); 
+			$passport_file = glob('./uploads/accounts/'.$passport); 
+			$voter_card_file = glob('./uploads/accounts/'.$voter_card); 
+			$bank_passbook_file = glob('./uploads/accounts/'.$bank_passbook); 
+			
+				if(is_file($balance_sheet_files)){
+					unlink($balance_sheet_files);
+				}
+				if(is_file($aadhar_card_file)){
+					unlink($aadhar_card_file);
+				}
+				if(is_file($passport_file)){
+					unlink($passport_file);
+				}
+				if(is_file($voter_card_file)){
+					unlink($voter_card_file);
+				}
+				if(is_file($bank_passbook_file)){
+					unlink($bank_passbook_file);
+				}
+				   
+
+		$result = $this->Main->delete('id',$kycid,'kyc_documents');
+		
+			redirect('document/file_upload/'.$folderid);
 	}
 }

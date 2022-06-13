@@ -141,6 +141,8 @@
 														<?php } ?>
 														</td>
 														<td>
+														<a href="<?= base_url('document/delete_roc/'.$registrars_companiesRow['folder_assign_id'].'/'.$registrars_companiesRow['id'])?>" class="btn btn-default"  title="Delete Tasks"><button type="button" class="btn btn-default" style="background-color: #023e8a; color:#fff" data-toggle="tooltip"><i class="fa fa-trash"></i></button></a>
+
 														<a  href="javascript:void(0);" data-registrars_companies_Id="<?=  $registrars_companiesRow['id'];?>" data-folder_assign_id = "<?= $registrars_companiesRow['folder_assign_id'] ?>" class="btn btn-default Registrars_companiesStatus" title="Status"><button type="button" class="btn btn-default" style="background-color: #023e8a; color:#fff" data-toggle="tooltip"><i class="fas fa-tasks"></i></button></a>
 														
 														<a href="javascript:void(0);" data-registrars_companies_Id="<?=  $registrars_companiesRow['id'];?>" data-folder_assign_id = "<?= $registrars_companiesRow['folder_assign_id'] ?>" class="btn btn-default openRegistrars_companies" title="Capture"><button type="button" class="btn btn-default" onclick="on_camera()" style="background-color: #023e8a; color:#fff" data-toggle="tooltip"><i class="fa fa-camera"></i></button></a>
@@ -184,7 +186,7 @@
                                     <div class="card bg-c-darkred update-card">
                                        <div class="card-block">
                                           <div class="align-items-end">
-												<?php $this->load-> view('document/income_tax_view'); ?>		
+												<?php $this->load->view('document/income_tax_view'); ?>		
                                           </div>
                                        </div>
                                     </div>

@@ -143,20 +143,20 @@ class Employer extends CI_Controller
 		$company_id = $this->input->post('company_id');
 		extract($_POST);
 		$data=array(
-					'company_vertical'=>$group,
-					'company_name'=>$company_name,
-					'contact_person'=>$contact_person,
-					'registered_office_address'=>$registered_office_address,
-					'corporate_office_address'=>$corporate_office_address,
-					'admin_office_address'=>$admin_office_address,
-					'factory_address'=>$factory_address,
-					'branch_address'=>$branch_address,
-					'email'=>$email,
-					'website'=>$website,
-					'office_number'=>$office_number,
-					'mobile_number'=>$mobile_number,
-					'work_of_client'=>$work_of_client,
-					'modified_at'=>date('Y-m-d H:i:s'));
+			'company_vertical'=>$group,
+			'company_name'=>$company_name,
+			'contact_person'=>$contact_person,
+			'registered_office_address'=>$registered_office_address,
+			'corporate_office_address'=>$corporate_office_address,
+			'admin_office_address'=>$admin_office_address,
+			'factory_address'=>$factory_address,
+			'branch_address'=>$branch_address,
+			'email'=>$email,
+			'website'=>$website,
+			'office_number'=>$office_number,
+			'mobile_number'=>$mobile_number,
+			'work_of_client'=>$work_of_client,
+			'modified_at'=>date('Y-m-d H:i:s'));
 
 		$clean_data=$this->security->xss_clean($data);
 			
@@ -164,8 +164,6 @@ class Employer extends CI_Controller
 			if($result == true){
 				redirect('employer/editEmployer/'.$company_id);
 			}
-		
-		
 	}
 	public function deleteEmployer()
     {

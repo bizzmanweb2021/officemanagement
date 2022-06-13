@@ -31,7 +31,8 @@
               <!-- form start -->
 							<?php foreach($editEmployers as $editEmployersRow){ ?>
               <form action="<?= base_url('employer/post_edit_employer')?>" method="POST" enctype="multipart/form-data">
-							<input type="hidden" class="form-control" value="<?= $editEmployersRow['id'] ?>" name="company_id">
+
+								<input type="hidden" class="form-control" value="<?= $editEmployersRow['id'] ?>" name="company_id">
                 <div class="card-body">
                 <div class="row">
                   <div class="col-md-12">

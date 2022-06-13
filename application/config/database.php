@@ -94,12 +94,13 @@ $db['default'] = array(
 	'failover' => array(),
 	'save_queries' => TRUE
 );
+
 /*
 $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost',
-	'username' => 'root', #bizzmantest_office
-	'password' => '', #C0#J=xnj^jU@
+	'username' => 'root',
+	'password' => '', 
 	'database' => 'bizzmantest_office',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',

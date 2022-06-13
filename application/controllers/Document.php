@@ -1134,4 +1134,13 @@ class Document extends CI_Controller
 		
 			redirect('document/file_upload/'.$folderid);
 	}
+	public function delete_roc(){
+
+		$rocid = $this->uri->segment(4);
+		$folderid = $this->uri->segment(3);		   
+
+		$result = $this->Main->delete('id',$rocid,'registrars_of_companies');
+		
+		redirect('document/file_upload/'.$folderid);
+	}
 }

@@ -69,7 +69,7 @@
                         <td>
 													<a href="https://wa.me/<?= $employer['mobile_number']?>" target="_blank"><img src="<?= base_url('uploads/icon/WhatsApp.png')?>" width="40" height="40" alt=""></a>
 
-													<a href="<?= base_url('employer/editEmployer/'.$employer['id'])?>" class="btn btn-default" data-toggle="tooltip" title="Edit" style="background-color: #264653; color:#fff"><i class="fa fa-edit"></i></a>
+													<a href="<?= base_url('employer/editEmployer/'.$employer['id'])?>" class="btn btn-default" data-toggle="tooltip" title="Edit" style="background-color: #264653; color:#fff;"><i class="fa fa-edit"></i></a>
 													<a href="<?= base_url('employer/deleteEmployer/'.$employer['id'])?>" class="btn btn-default" data-toggle="tooltip" title="Delete" style="background-color:#264653; color: #fff"><i class="fa fa-trash"></i></a>
 											
 											</td>

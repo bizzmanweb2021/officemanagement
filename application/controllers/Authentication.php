@@ -104,7 +104,7 @@ class Authentication extends CI_Controller
 		}
 		else
 		{
-			redirect('dashboard');
+			redirect('/');
 		}
 	}
 }

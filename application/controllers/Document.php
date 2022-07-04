@@ -41,10 +41,15 @@ class Document extends CI_Controller
 		$data['employers'] = $this->Employer->getAllEmployers();
 		$data['employees'] = $this->Employee->getAllEmployees();
 		$data['form_number'] = $this->Document->getAllform_number();
+		$data['tds_tcs_form_name'] = $this->Document->getAlltds_tcs_form_name();
 		$id = $this->uri->segment(3);
 		$data['registrars_companies'] = $this->Document->all_registrars_companies($id);
 		$data['income_tax'] = $this->Document->all_income_tax($id);
 		$data['all_accounts'] = $this->Document->all_accounts($id);
+		$data['all_trade_licence'] = $this->Document->all_trade_licence($id);
+		$data['all_professional_tax'] = $this->Document->all_professional_tax($id);
+		$data['all_gst'] = $this->Document->all_gst($id);
+		$data['all_tds_and_tcs'] = $this->Document->all_tds_and_tcs($id);
 		$data['all_kycDoc'] = $this->Document->getAll_kycDoc($id);
 		$data['folder'] = $this->Project->getData($id);
 		$data['file']=$this->Document->getDocImages($this->session->userdata('user'),$id);
@@ -470,6 +475,22 @@ class Document extends CI_Controller
 			$errorUploadType = 'Some problem occurred, please try again.';
 		}
 	}
+	public function post_add_tds_form_number()
+	{
+		$folderid = $this->input->post("folderid");
+		extract($_POST);
+		$data = array(
+			'form_name' => $tdsform_number,
+		);
+
+		$insert = $this->Main->insert('tds_tcs_form_name',$data);
+		
+		if ($insert == true) {
+			return redirect('document/file_upload/'.$folderid);
+		} else {
+			$errorUploadType = 'Some problem occurred, please try again.';
+		}
+	}
 	public function updateroc_status()
 	{
 		$folderid = $this->input->post("folderid");
@@ -492,6 +513,17 @@ class Document extends CI_Controller
 		$folderid = $this->uri->segment(4);
 
 		$result=$this->Main->delete('id',$form_numberid,'roc_form_number');
+		if($result==true)
+		{
+			redirect('document/file_upload/'.$folderid);
+		}
+	}
+	public function delete_tdsform_number()
+	{
+		$form_numberid = $this->uri->segment(3);
+		$folderid = $this->uri->segment(4);
+
+		$result=$this->Main->delete('id',$form_numberid,'tds_tcs_form_name');
 		if($result==true)
 		{
 			redirect('document/file_upload/'.$folderid);
@@ -763,26 +795,17 @@ class Document extends CI_Controller
 	public function post_add_professional_tax(){
 
 		$folderid = $this->input->post("folderid");
-		$accounts_id = $this->input->post("accounts_id");
+		
 		extract($_POST);
 		$data = array(
-			'accounts_id' => $accounts_id,
+			'company_id' => $company_name,
+			'folder_id' => $folderid,
 			'professionalTax_amount' => $professionalTax_amount,
 			'professionalTax_date' => $professionalTax_date
 		);
-
-		$professional_tax_query = $this->db->query("SELECT * FROM professional_tax WHERE professional_tax.accounts_id = '".$accounts_id."'");
-		$professional_tax_rownum = $professional_tax_query->num_rows();
-
-		if($professional_tax_rownum > 0){
-			$this->db->where('accounts_id', $accounts_id);
-			$this->db->update('professional_tax', $data);
-		}else{
-			$this->db->insert('professional_tax', $data);
-		}
-
-		/*$insert = $this->Main->insert('professional_tax',$data);
-		$insert_id = $this->db->insert_id();*/
+		
+		$this->db->insert('professional_tax', $data);
+		$insert_id = $this->db->insert_id();
 
 		$this->load->library('upload');
 		if($_FILES['professionalTax_challan']['name'] != '')
@@ -795,7 +818,7 @@ class Document extends CI_Controller
 			$_FILES['file']['size']       = $_FILES['professionalTax_challan']['size'];
 
 			// File upload configuration
-			$uploadPath = 'uploads/accounts/';
+			$uploadPath = 'uploads/professionalTax/';
 			$config['upload_path'] = $uploadPath;
 			$config['allowed_types'] = 'jpg|jpeg|png|pdf|docx';
 			$config['max_size'] = ""; // Can be set to particular file size , here it is 2 MB(2048 Kb)
@@ -812,7 +835,7 @@ class Document extends CI_Controller
 				$imageData = $this->upload->data();
 				$uploadImgData['professionalTax_challan'] = $imageData['file_name'];
 			} 
-			$updateroc_additional =$this->Main->update('accounts_id',$accounts_id, $uploadImgData,'professional_tax');      
+			$updateroc_additional = $this->Main->update('id',$insert_id, $uploadImgData,'professional_tax');      
 		} 
 
 		if ($insert == true || $updateroc_additional == true) {
@@ -821,27 +844,41 @@ class Document extends CI_Controller
 			$errorUploadType = 'Some problem occurred, please try again.';
 		}
 	}
+	public function post_add_gst(){
+
+		$folderid = $this->input->post("folderid");
+		
+		extract($_POST);
+		$data = array(
+			'company_id' => $company_name,
+			'folder_id' => $folderid,
+			'return_file_type' => $return_file_type,
+			'period' => $period,
+			'payment' => $payment,
+			'date_of_file' => $date_of_file,
+		);
+		
+		$insert = $this->db->insert('gst', $data);
+		
+		if ($insert == true) {
+			return redirect('document/file_upload/'.$folderid);
+		} else {
+			$errorUploadType = 'Some problem occurred, please try again.';
+		}
+	}
 	public function post_add_trade_licence(){
 
 		$folderid = $this->input->post("folderid");
-		$accounts_id = $this->input->post("accounts_id");
 		extract($_POST);
 		$data = array(
-			'accounts_id' => $accounts_id,
+			'folder_id' => $folderid,
+			'company_id' => $company_name,
 			'trade_licence_amount' => $trade_licence_amount,
 			'trade_licence_date' => $trade_licence_date
 		);
-
-		$trade_licence_query = $this->db->query("SELECT * FROM trade_licence WHERE trade_licence.accounts_id = '".$accounts_id."'");
-		$trade_licence_rownum = $trade_licence_query->num_rows();
-
-		if($trade_licence_rownum > 0){
-			$this->db->where('accounts_id', $accounts_id);
-			$this->db->update('trade_licence', $data);
-		}else{
-			$this->db->insert('trade_licence', $data);
-		}
-
+		
+		$this->db->insert('trade_licence', $data);
+		$insert_id = $this->db->insert_id();
 
 		$this->load->library('upload');
 		if($_FILES['trade_licence_challan']['name'] != '')
@@ -854,7 +891,7 @@ class Document extends CI_Controller
 			$_FILES['file']['size']       = $_FILES['trade_licence_challan']['size'];
 
 			// File upload configuration
-			$uploadPath = 'uploads/accounts/';
+			$uploadPath = 'uploads/trade_licence/';
 			$config['upload_path'] = $uploadPath;
 			$config['allowed_types'] = 'jpg|jpeg|png|pdf|docx';
 			$config['max_size'] = ""; // Can be set to particular file size , here it is 2 MB(2048 Kb)
@@ -871,7 +908,7 @@ class Document extends CI_Controller
 				$imageData = $this->upload->data();
 				$uploadImgData['trade_licence_challan'] = $imageData['file_name'];
 			} 
-			$updateroc_additional = $this->Main->update('accounts_id',$accounts_id, $uploadImgData,'trade_licence');      
+			$updateroc_additional = $this->Main->update('id',$insert_id, $uploadImgData,'trade_licence');      
 		} 
 
 		if ($insert == true || $updateroc_additional == true) {
@@ -880,7 +917,66 @@ class Document extends CI_Controller
 			$errorUploadType = 'Some problem occurred, please try again.';
 		}
 	}
+	public function post_add_tdstcs(){
 
+		$folderid = $this->input->post("folderid");
+		
+		extract($_POST);
+		$data = array(
+			'company_id' => $company_name,
+			'folder_id' => $folderid,
+			'form_id' => $form_name,
+			'return_type' => $return_type,
+			'financial_year' => $financial_year,
+			'quarter' => $quarter,
+			'date_of_file' => $date_of_file
+
+		);
+		
+		$insert = $this->db->insert('tds_and_tcs', $data);
+		
+		if ($insert == true) {
+			return redirect('document/file_upload/'.$folderid);
+		} else {
+			$errorUploadType = 'Some problem occurred, please try again.';
+		}
+	}
+	public function delete_tradelicence(){
+
+		$trade_licenceid = $this->uri->segment(4);
+		$folderid = $this->uri->segment(3);		   
+
+		$result = $this->Main->delete('id',$trade_licenceid,'trade_licence');
+		
+		redirect('document/file_upload/'.$folderid);
+	}
+	public function delete_tds_and_tcs(){
+
+		$trade_licenceid = $this->uri->segment(4);
+		$folderid = $this->uri->segment(3);		   
+
+		$result = $this->Main->delete('id',$trade_licenceid,'tds_and_tcs');
+		
+		redirect('document/file_upload/'.$folderid);
+	}
+	public function delete_professionalTax(){
+
+		$ptid = $this->uri->segment(4);
+		$folderid = $this->uri->segment(3);		   
+
+		$result = $this->Main->delete('id',$ptid,'professional_tax');
+		
+		redirect('document/file_upload/'.$folderid);
+	}
+	public function delete_gst(){
+
+		$gstid = $this->uri->segment(4);
+		$folderid = $this->uri->segment(3);		   
+
+		$result = $this->Main->delete('id',$gstid,'gst');
+		
+		redirect('document/file_upload/'.$folderid);
+	}
 	public function delete_accounts(){
 
 		$accountsid = $this->uri->segment(4);
@@ -919,8 +1015,6 @@ class Document extends CI_Controller
 				   
 
 		$result=$this->Main->delete('id',$accountsid,'accounts');
-		$result2 =$this->Main->delete('accounts_id',$accountsid,'professional_tax');
-		$result3 =$this->Main->delete('accounts_id',$accountsid,'trade_licence');
 		
 			redirect('document/file_upload/'.$folderid);
 	}

@@ -29,7 +29,7 @@
               <form action="<?= base_url('task/post_add_sub_task')?>" method="post" enctype="multipart/form-data">
                 <div class="card-body">
 					<div class="form-group">
-						<label for="exampleInputPassword1">Name of the Client</label>
+						<label for="exampleInputPassword1">Name of the Task</label>
 						<select class="form-control" name="task_name">
 							<?php foreach($tasks as $tasksRow): ?>
 							<option value="<?= $tasksRow['id']?>"><?= $tasksRow['name']?></option>

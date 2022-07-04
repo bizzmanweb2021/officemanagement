@@ -153,7 +153,7 @@
             </button>
           </div>
           <div class="modal-body">
-			<form action="<?= base_url('document/post_add_form_number')?>" method="post" enctype="multipart/form-data">
+			<form action="<?= base_url('document/post_add_tds_form_number')?>" method="post" enctype="multipart/form-data">
 	
 				<input type="hidden" class="form-control" name="folderid" value = "<?php echo $folderid; ?>">
 
@@ -436,7 +436,7 @@
 
 
 	<!--Professional Tax Modal -->
-	<div class="modal fade" id="professional_taxModal" tabindex="-1" role="dialog" aria-labelledby="professional_taxModalLabel" aria-hidden="true">
+	<div class="modal fade" id="professionalTaxModal" tabindex="-1" role="dialog" aria-labelledby="professional_taxModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -449,9 +449,20 @@
 			<form action="<?= base_url('document/post_add_professional_tax')?>" method="post" enctype="multipart/form-data">
 	
 				<input type="hidden" class="form-control" name="folderid" value = "<?php echo $folderid; ?>">
-				<input type="hidden" class="form-control accounts_id" name="accounts_id" value = "">
 
                 <div class="card-body">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<label for=""> Company Name</label>
+								<select class="form-control" name="company_name">
+									<?php foreach($employers as $employer): ?>
+									<option value="<?= $employer['id']?>"><?= $employer['company_name']?></option>
+									<?php endforeach; ?> 
+								</select>
+							</div>
+						</div>
+					</div>
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group">
@@ -507,9 +518,20 @@
 			<form action="<?= base_url('document/post_add_trade_licence')?>" method="post" enctype="multipart/form-data">
 	
 				<input type="hidden" class="form-control" name="folderid" value = "<?php echo $folderid; ?>">
-				<input type="hidden" class="form-control accounts_id" name="accounts_id" value = "">
 
                 <div class="card-body">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<label for=""> Company Name</label>
+								<select class="form-control" name="company_name">
+									<?php foreach($employers as $employer): ?>
+									<option value="<?= $employer['id']?>"><?= $employer['company_name']?></option>
+									<?php endforeach; ?> 
+								</select>
+							</div>
+						</div>
+					</div>
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group">
@@ -550,7 +572,7 @@
     </div>
 <!--end trade_licence Modal -->
 
-<!--trade_licence Modal -->
+<!--kycModal Modal -->
 <div class="modal fade" id="kycModal" tabindex="-1" role="dialog" aria-labelledby="kycModallLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -631,3 +653,235 @@
       </div>
     </div>
 <!--end trade_licence Modal -->
+
+
+
+<!--gst Modal -->
+<div class="modal fade" id="gstModal" tabindex="-1" role="dialog" aria-labelledby="professional_taxModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="rocModalLabel">GST</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+			<form action="<?= base_url('document/post_add_gst')?>" method="post" enctype="multipart/form-data">
+	
+				<input type="hidden" class="form-control" name="folderid" value = "<?php echo $folderid; ?>">
+
+                <div class="card-body">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<label for=""> Company Name</label>
+								<select class="form-control" name="company_name">
+									<?php foreach($employers as $employer): ?>
+									<option value="<?= $employer['id']?>"><?= $employer['company_name']?></option>
+									<?php endforeach; ?> 
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for=""> Amount</label>
+								<select class="form-control" name="return_file_type">
+									<option value="GSTR-3B">GSTR-3B</option>
+									<option value="GSTR-1">GSTR-1</option>
+									<option value="ANNUAL RETURN">ANNUAL RETURN</option>
+									<option value="REFUND">REFUND</option>
+									<option value="CANCELLATION">CANCELLATION</option>
+									<option value="REGISTRATION">REGISTRATION</option>
+								</select>
+							</div>
+						</div>
+						
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for=""> Period</label>
+								<input type="Date" class="form-control period" name="period">
+							</div>
+						</div>
+						
+					</div> 
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for=""> Payment</label>
+								<input type="text" class="form-control" name="payment">
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for=""> Date Of File</label>
+								<input type="date" class="form-control" name="date_of_file">
+							</div>
+						</div>
+					</div>    
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                </div>
+              </form>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+<!--end gst Modal -->
+
+
+<!--tds tcs Modal -->
+<div class="modal fade" id="tdstcsModal" tabindex="-1" role="dialog" aria-labelledby="professional_taxModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="rocModalLabel">TDS & TCS</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+			<form action="<?= base_url('document/post_add_tdstcs')?>" method="post" enctype="multipart/form-data">
+	
+				<input type="hidden" class="form-control" name="folderid" value = "<?php echo $folderid; ?>">
+
+                <div class="card-body">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<label for=""> Company Name</label>
+								<select class="form-control" name="company_name">
+									<?php foreach($employers as $employer): ?>
+									<option value="<?= $employer['id']?>"><?= $employer['company_name']?></option>
+									<?php endforeach; ?> 
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for=""> Form Name</label>
+								<select class="form-control" name="form_name">
+									<?php foreach($tds_tcs_form_name as $tds_tcs_form_nameRow): ?>
+									<option value="<?= $tds_tcs_form_nameRow['id']?>"><?= $tds_tcs_form_nameRow['form_name']?></option>
+									<?php endforeach; ?> 
+								</select>
+							</div>
+						</div>
+						
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for=""> Return Type</label>
+								<select class="form-control" name="return_type">
+									<option value="" hidden>Return Type</option>
+									<option value="1">CORRECTION</option>
+									<option value="2">ORIGINAL</option>
+								</select>
+							</div>
+						</div>
+						
+					</div> 
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for=""> Financial Year</label>
+								<input type="text" class="form-control" name="financial_year">
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for=""> Quarter</label>
+								<input type="text" class="form-control" name="quarter">
+							</div>
+						</div>
+					</div>  
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<label for=""> Date Of File</label>
+								<input type="date" class="form-control" name="date_of_file">
+							</div>
+						</div>
+					</div>  
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                </div>
+              </form>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+<!--end tds tcs Modal -->
+
+
+<!-- tds From Number Modal -->
+<div class="modal fade" id="tdstcsformModal" tabindex="-1" role="dialog" aria-labelledby="tdstcsformModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="tdstcsformModalLabel">TDS & TCS Form Number</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+			<form action="<?= base_url('document/post_add_tds_form_number')?>" method="post" enctype="multipart/form-data">
+	
+				<input type="hidden" class="form-control" name="folderid" value = "<?php echo $folderid; ?>">
+
+                <div class="card-body">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<label for="">FORM NUMBER</label>
+								<input type="text" class="form-control" name="tdsform_number" placeholder="Enter From Number">
+							</div>
+						</div>
+					</div>     
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                </div>
+              </form>
+
+			  	<table class="table table-bordered table-striped" style="overflow: auto; width: 100%; height: 100px; text-align: center;">
+					<thead style="background-color:#023047; color: #fff;position: sticky;top: 0;">
+					<tr>
+						<th>Form Number</th>
+						<th>Action</th>
+					</tr>
+					</thead>
+					<tbody>
+						<?php foreach($tds_tcs_form_name as $tds_tcs_form_nameRow): ?>
+						<tr style="background-color: #fff; color: #000">
+							<td><?= $tds_tcs_form_nameRow['form_name']?></td>
+							<td><a href="<?= base_url('document/delete_tdsform_number/'.$tds_tcs_form_nameRow['id'].'/'.$folderid)?>"><i class="fa fa-trash" style="color: red;"></i></a></td>
+						</tr>
+						<?php endforeach; ?>
+					</tbody>
+				</table>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+<!--end roc -->

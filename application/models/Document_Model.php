@@ -209,20 +209,56 @@ class Document_Model extends CI_Model
         return $this->db->get()->result_array();
     }
 	function all_accounts($id){
-		$this->db->select('accounts.*,accounts.id as account_id,companies.company_name,professional_tax.*,trade_licence.*');
+		$this->db->select('accounts.*,accounts.id as account_id,companies.company_name');
         $this->db->from('accounts');
 		$this->db->join('companies','companies.id = accounts.company_id','LEFT');
-		$this->db->join('professional_tax','professional_tax.accounts_id = accounts.id','LEFT');
-		$this->db->join('trade_licence','trade_licence.id = accounts.id','LEFT');
         $this->db->where('accounts.folder_id',$id);
 		
         return $this->db->get()->result_array();
 	}
-	
+	function all_trade_licence($id){
+		$this->db->select('trade_licence.*,companies.company_name');
+        $this->db->from('trade_licence');
+		$this->db->join('companies','companies.id = trade_licence.company_id','LEFT');
+        $this->db->where('trade_licence.folder_id',$id);
+		
+        return $this->db->get()->result_array();
+	}
+	function all_professional_tax($id){
+		$this->db->select('professional_tax.*,companies.company_name');
+        $this->db->from('professional_tax');
+		$this->db->join('companies','companies.id = professional_tax.company_id','LEFT');
+        $this->db->where('professional_tax.folder_id',$id);
+		
+        return $this->db->get()->result_array();
+	}
+	function all_gst($id){
+		$this->db->select('gst.*,companies.company_name');
+        $this->db->from('gst');
+		$this->db->join('companies','companies.id = gst.company_id','LEFT');
+        $this->db->where('gst.folder_id',$id);
+		
+        return $this->db->get()->result_array();
+	}
+	function all_tds_and_tcs($id){
+		$this->db->select('tds_and_tcs.*,companies.company_name,tds_tcs_form_name.form_name');
+        $this->db->from('tds_and_tcs');
+		$this->db->join('companies','companies.id = tds_and_tcs.company_id','LEFT');
+		$this->db->join('tds_tcs_form_name','tds_tcs_form_name.id = tds_and_tcs.form_id','LEFT');
+        $this->db->where('tds_and_tcs.folder_id',$id);
+		
+        return $this->db->get()->result_array();
+	}
 	function getAllform_number()
 	{
 		$this->db->select('roc_form_number.*');
 		$this->db->from('roc_form_number');
+		return $this->db->get()->result_array();
+	}
+	function getAlltds_tcs_form_name()
+	{
+		$this->db->select('tds_tcs_form_name.*');
+		$this->db->from('tds_tcs_form_name');
 		return $this->db->get()->result_array();
 	}
 	function getAll_kycDoc($id){

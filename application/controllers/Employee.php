@@ -14,7 +14,7 @@ class Employee extends CI_Controller
 
 		if($this->session->has_userdata('user')!=false)
 		{
-			$data['employees']=$this->Employee->getAllEmployees();
+			$data['employees']=$this->Employee->getAllEmployeesView();
 			$this->layout->view('employee/employees',$data);
 		}
 		else
@@ -27,6 +27,7 @@ class Employee extends CI_Controller
 	{
 		if($this->session->has_userdata('user')!=false)
 		{
+			$data['empRole']=$this->Employee->getAllRole();
 			$data['employees']=$this->Employee->getAllEmployees();
 			$this->layout->view('employee/add-employee',$data);
 		}
@@ -54,9 +55,11 @@ class Employee extends CI_Controller
 								'created_by'=>$this->session->userdata('user'),
 								'created_at'=>date('Y-m-d H:i:s'),
 								'modified_at'=>date('Y-m-d H:i:s'),
+								'role_id'=>$role_id,
 								'reporting_manager'=>$reporting_manager);
 					$clean_data=$this->security->xss_clean($data);
 					$result=$this->Main->insert('users',$clean_data);
+
 					if($result==true)
 					{
 						$this->output->set_output(json_encode(['result'=>1]));
@@ -110,7 +113,10 @@ class Employee extends CI_Controller
 	    {
 	        if($this->uri->segment(3)!="")
 	        {
-	            $data['employeeId']=$this->uri->segment(3);
+	            $employeeId =$this->uri->segment(3);
+				$data['empRole']=$this->Employee->getAllRole();
+				$data['employees']=$this->Employee->getAllEmployees();
+				$data['employeesDetais']=$this->Employee->getAlleditEmployees($employeeId);
 	            $this->layout->view('employee/employee-edit',$data);
 	        }
 	        else
@@ -126,18 +132,29 @@ class Employee extends CI_Controller
 	
 	public function post_edit_employee()
 	{
-	    if($this->session->has_userdata('user')!=false)
-	    {
-	        if($this->uri->segment(3)!="")
+			$password = $this->input->post('password');
+	        $employeeId=$this->input->post('user_id');
+	        if($employeeId !="")
 	        {
-	            $employeeId=$this->uri->segment(3);
 	            extract($_POST);
 	            $data=array('name'=>$name,
 	            	        'email'=>$email,
+							'username'=>$username,
+							'role_id'=>$role_id,
+							'reporting_manager'=>$reporting_manager,
 	                        'modified_at'=>date('Y-m-d H:i:s'));
+
 	            $clean_data=$this->security->xss_clean($data);
                 $result=$this->Main->update('id',$employeeId,$data,'users');
-                if($result==true)
+
+				if($password != ''){
+					$data2 = array(
+						'password'=>hash('sha512',$password),
+					);
+					$clean_data2 = $this->security->xss_clean($data2);
+                	$result2 = $this->Main->update('id',$employeeId,$data2,'users');
+				}
+                if($result==true || $result2 == true)
                 {
                     redirect('employee');
                 }
@@ -150,11 +167,6 @@ class Employee extends CI_Controller
 	        {
 	            redirect('dashboard');
 	        }
-	    }
-	    else
-	    {
-	        redirect('dashboard');
-	    }
 	}
 	public function deleteEmployee()
     {

@@ -5,7 +5,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Sub Tasks</h1>
+            <h1>Category</h1>
           </div>
         </div>
       </div><!-- /.container-fluid -->
@@ -26,7 +26,7 @@
                 <table id="example2" class="table table-bordered table-striped">
                   <thead style="background-color:#023047; color: #fff">
                   <tr>
-                    <th>Sub Task</th>
+                    <th>Category</th>
                     <th>Assign To</th>
                     <th>Created By</th>
                     <th>Action</th>

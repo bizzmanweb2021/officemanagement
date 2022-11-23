@@ -32,19 +32,61 @@
               
               <!-- /.card-header -->
               <!-- form start -->
-              <form id="add-group" action="<?= base_url('employee/post_edit_employee/'.$employeeId)?>" method="POST">
-                <div class="card-body">
-                <div class="row">
-                <div class="col-md-12">
-                     <div class="form-group">
-                    <label for="exampleInputEmail1">Name</label>
-                    <input type="text" class="form-control" id="exampleInputEmail1" name="name" placeholder="Enter contact Person Name" required=""><br/>
-                    <label for="exampleInputEmail2">Email</label>
-                    <input type="text" class="form-control" id="exampleInputEmail2" name="email" placeholder="Enter Email Id" required="">
-                    <div id="" class="popup_error" style="font-size: 13px;color:#CC0000;"></div>
-                  </div>
-                </div>
-                </div>
+              <form id="add-group" action="<?= base_url('employee/post_edit_employee/')?>" method="POST">
+							<input type="hidden" class="form-control" id="" name="user_id" value="<?= $employeesDetais['id']; ?>">
+								<div class="card-body">
+                  <div class="row">
+                      <div class="col-md-6"> 
+												<div class="form-group">
+                    			<label for="">Name</label>
+                    			<input type="text" class="form-control" id="" name="name" placeholder="Enter Name" value="<?= $employeesDetais['name']; ?>">
+                  			</div>
+											</div>
+                    <div class="col-md-6">
+												<div class="form-group">
+													<label for="">Email</label>
+													<input type="email" class="form-control" id="" name="email" placeholder="Enter Email" value="<?= $employeesDetais['email']; ?>">
+												</div>
+										</div>
+									</div>
+									<div class="row">
+                  	<div class="col-md-6">
+											<div class="form-group">
+												<label for="">Username</label>
+												<input type="text" class="form-control" id="" name="username" placeholder="Enter Username" value="<?= $employeesDetais['username']; ?>">
+											</div>
+                  	</div>
+                  	<div class="col-md-6">
+											<div class="form-group">
+												<label for="">Password</label>
+												<input type="text" class="form-control" id=""name="password" placeholder="Enter Password">
+											</div>
+                  	</div>
+                	</div>
+									<div class="row">
+										<div class="col-md-6">
+											<div class="form-group">
+													<label for="exampleInputPassword1">Employee Role</label>
+													<select class="form-control" name="role_id">
+														<option hidden>Select Role</option>
+														<?php foreach($empRole as $empRoleRow): ?>
+																<option value="<?= $empRoleRow['id']?>" <?php if($empRoleRow['id'] == $employeesDetais['role_id']){ ?> selected <?php } ?>><?= $empRoleRow['name']?></option>
+															<?php endforeach; ?> 
+													</select>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+													<label for="exampleInputPassword1">Reporting Manager</label>
+													<select class="form-control" name="reporting_manager">
+														<?php foreach($employees as $employee): ?>
+																<option value="<?= $employee['id']?>"<?php if($employee['id'] == $employeesDetais['reporting_manager']){ ?> selected <?php } ?>><?= $employee['name']?></option>
+															<?php endforeach; ?> 
+													</select>
+											</div>
+										</div>
+										
+									</div>
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">Submit</button>
                 </div>

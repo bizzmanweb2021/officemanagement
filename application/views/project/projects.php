@@ -19,7 +19,7 @@
 
             <div class="card" style="border-radius: 15px">
               <div class="card-header">
-                <a href="<?=base_url('project/add_project')?>" target="_blank"><button class="btn btn-primary" data-toggle="tooltip" title="Add Project"><i class="fa fa-plus"></i></button></a>
+                <a href="<?=base_url('project/add_project')?>" target="_blank"><button class="btn btn-primary" data-toggle="tooltip" title="Add Project">Add Project</button></a>
 				<a href="<?=base_url('task/view_task')?>" target="_blank"><button class="btn btn-primary" data-toggle="tooltip" title="View Project">View Task</button></a>
               </div>
               <!-- /.card-header -->
@@ -46,18 +46,15 @@
 										<thead style="background-color:#023047; color: #fff">
 										<tr>
 											<th>Work ID</th>
-											<th>Nature Of Job</th>
 											<th>Client Name</th>
-											<th>Assign To</th>
+											<th>Expected Delivery</th>
+											<th>Final Date</th>
 											<th>Date of Receipt</th> 
 											<th>Completion Date</th>
-											<th>Problems/Issues</th>
-											<th>Short Out Issues</th>
 											<th>Task</th>
-											<th>Sub-task</th>
-											<th>Super Task</th>
+											<th>Category</th>
+											<th>Assign To</th>
 											<th>Date Of Bill</th>
-											<th>Expected Delivery</th>
 											<th>Priority</th>
 											<th>Status</th>
 											<th>Created By</th>
@@ -68,18 +65,16 @@
 											<?php foreach($projects as $project): ?>
 												<tr style="background-color: #fff; color: #000">
 													<td><i class="fa fa-id-card"></i> <?= $project['work_id']?></td>
-													<td><i class="fa fa-laptop-code"></i> <?= $project['project_name']?></td>
 													<td><i class="fa fa-building"></i> <?= $project['company_name']?></td>
-													<td><i class="fa fa-user"></i> <?= $project['project_manager_name']?></td>
+													<td><i class="fa fa-calendar-day"></i> <?= $project['expected_delivery']?></td>
+													<td><i class="fa fa-calendar-day"></i> <?= $project['final_date']?></td>
 													<td><i class="fa fa-calendar-day"></i> <?= $project['created_at']?></td>
 													<td><i class="fa fa-calendar-day"></i> <?= $project['completion_date']?></td>
-													<td><i class="fa fa-laptop-code"></i> <?= $project['problems_issues']?></td>
-													<td><i class="fa fa-laptop-code"></i> <?= $project['short_out_issues']?></td>
 													<td><i class="fa fa-laptop-code"></i> <?= $project['task_name']?></td>
 													<td><i class="fa fa-laptop-code"></i> <?= $project['sub_taskName']?></td>
-													<td><i class="fa fa-laptop-code"></i> <?= $project['super_taskName']?></td>
+													<td><i class="fa fa-user"></i> <?= $project['project_manager_name']?></td>
 													<td><i class="fa fa-calendar-day"></i> <?= $project['date_of_bill']?></td>
-													<td><i class="fa fa-calendar-day"></i> <?= $project['expected_delivery']?></td>
+													
 													<td>
 														<?php if($project['priority'] == 1){ ?>
 														<span class = "btn btn-danger" style="box-shadow:none !important;">High</span>
@@ -102,14 +97,22 @@
 													<td><?= $project['employee_name']?></td>
 													<td>
 													<!--a href="<?= base_url('project/tasks/'.$project['id'])?>" class="btn btn-default" style="background-color: #264653; color:#fff" data-toggle="tooltip" title="View Tasks"><i class="fa fa-eye"></i></a-->
-													<button type="button" class="btn btn-default" style="background-color: #264653; color:#fff"
-                                                onclick="open_upload_file(<?= $project['id'] ?>)" data-toggle="tooltip" title="File upload"><i
-                                                    class="fa fa-upload"></i> </button> 
-													<a href="<?= base_url('project/edit_tasks/'.$project['id'])?>" class="btn btn-default" style="background-color: #264653; color:#fff" data-toggle="tooltip" title="Edit Tasks"><i class="fa fa-edit"></i></a>
+													<div class="row">
+														<!--<a href="<?= base_url('project/issues_problem/'.$project['id'])?>" class="btn btn-default" style="background-color: #264653; color:#fff" data-toggle="tooltip" title="View Issues"><i class="fa fa-eye"></i></a>-->
+														<a href="https://wa.me/<?= $project['mobile_number']?>" target="_blank"><img src="<?= base_url('uploads/icon/WhatsApp.png')?>" width="40" height="40" alt=""></a>
+														<button type="button" class="btn btn-default" style="background-color: #264653; color:#fff"
+													onclick="open_upload_file(<?= $project['id'] ?>)" data-toggle="tooltip" title="File upload"><i
+														class="fa fa-upload"></i> </button> 
+														<a href="<?= base_url('project/edit_tasks/'.$project['id'])?>" class="btn btn-default" style="background-color: #264653; color:#fff" data-toggle="tooltip" title="Edit Tasks"><i class="fa fa-edit"></i></a>
 
-													<a href="<?= base_url('project/delete_tasks/'.$project['id'])?>" class="btn btn-default" style="background-color: #264653; color:#fff" data-toggle="tooltip" title="Delete Tasks"><i class="fa fa-trash"></i></a>
+														<a href="<?= base_url('project/delete_tasks/'.$project['id'])?>" class="btn btn-default" style="background-color: #264653; color:#fff" data-toggle="tooltip" title="Delete Tasks"><i class="fa fa-trash"></i></a>
 
-													<a data-project_id="<?=  $project['id']; ?>" href="javascript:void(0);" class="btn btn-default editProjuct_status" style="background-color: #264653; color:#fff" data-toggle="tooltip" title="Add Status"><i class="fas fa-tasks"></i></a>
+														<?php if($this->session->userdata('user')=='1') {?>
+														<a data-project_id="<?=  $project['id']; ?>" href="javascript:void(0);" class="btn btn-default editProjuct_status" style="background-color: #264653; color:#fff" data-toggle="tooltip" title="Add Status"><i class="fas fa-tasks"></i></a>
+														<?php } ?>
+														
+													</div>
+													
 													
 													</td>
 												</tr>

@@ -19,8 +19,8 @@
 
             <div class="card" style="border-radius: 15px">
               <div class="card-header">
-							<a href="<?=base_url('task/add_task')?>" target="_blank"><button class="btn btn-primary" data-toggle="tooltip" title="Add Project"><i class="fa fa-plus"></i></button></a>
-							<a href="<?=base_url('task/subTasks')?>" target="_blank"><button class="btn btn-primary" data-toggle="tooltip" title="Add Project">Add Sub-Task</button></a>
+							<a href="<?=base_url('task/add_task')?>" target="_blank"><button class="btn btn-primary" data-toggle="tooltip" title="Add Project">Add task</button></a>
+							<?php /* <a href="<?=base_url('task/subTasks')?>" target="_blank"><button class="btn btn-primary" data-toggle="tooltip" title="Add Project">Add Category</button></a> */?>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -36,6 +36,7 @@
                       <tr  style="background-color: #fff; color: #000">
                         <td><i class="fa fa-tasks"></i> <?= $task['name']?></td>
                         <td>
+												<a href="<?= base_url('task/subTasks/'.$task['id'])?>" class="btn btn-default" style="background-color: #264653; color:#fff" data-toggle="tooltip" title="View Sub Task"><i class="fa fa-plus"></i></a>  
 												<a href="<?= base_url('task/viewSubTasks/'.$task['id'])?>" class="btn btn-default" style="background-color: #264653; color:#fff" data-toggle="tooltip" title="View Sub Task"><i class="fa fa-eye"></i></a>  
 													<!--	<a href="<?= base_url('project/assign_tasks/'.$task['id'].'/'.$project_id)?>" class="btn btn-default" style="background-color:#3d405b; color: #fff" data-toggle="tooltip" title="Asign Task"><i class="fas fa-tasks"></i> </i></a>--></td>
                       </tr>

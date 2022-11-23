@@ -20,6 +20,13 @@ class Document_Model extends CI_Model
         
         return $this->db->get()->result_array();
     }
+	function getFolderData($id)
+	{
+		$this->db->select('file_assign.*');
+		$this->db->from('file_assign');
+		$this->db->where('file_assign.id', $id);
+		return $this->db->get()->result_array();
+	}
     function storecaptureimage($data)
 	{
 		$insert = $this->db->insert('image',$data); 

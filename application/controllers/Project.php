@@ -18,15 +18,23 @@ class Project extends CI_Controller
 	{
 		//$this->load->view('project/super_sub_tasks', array('error' => ' ' )); 
 
-		if ($this->session->has_userdata('user') != false) {
+		$id = $this->session->userdata('user');
+		//echo $id;
+		if($id == '1'){
 			$data['projects'] = $this->Project->getAllProjects();
 			$data['PendingProjects'] = $this->Project->getAllPendingProjects();
 			$data['CompletedProjects'] = $this->Project->getAllCompletedProjects();
 			$data['file_assign'] = $this->Project->getData();
-			$this->layout->view('project/projects', $data);
-		} else {
-			redirect('dashboard');
+		}else{
+			$data['projects'] = $this->Project->getAllProjectsByid($id);
+			$data['PendingProjects'] = $this->Project->getAllPendingProjectsByid($id);
+			$data['CompletedProjects'] = $this->Project->getAllCompletedProjectsByid($id);
+			$data['file_assign'] = $this->Project->getData();
 		}
+
+			
+			$this->layout->view('project/projects', $data);
+		
 	}
 
 	public function add_project()
@@ -41,6 +49,35 @@ class Project extends CI_Controller
 		} else {
 			redirect('dashboard');
 		}
+	}
+	public function issues_problem()
+	{
+		if ($this->session->has_userdata('user') != false) {
+			$project_id = $this->uri->segment(3);
+			$data['project_issues'] = $this->Project->getAllissues_problem($project_id);
+			$this->layout->view('project/issues_problem', $data);
+		} else {
+			redirect('/');
+		}
+	}
+	public function post_add_problems_issues(){
+		$project_id = $this->input->post('project_id');
+		if($this->input->post('problems_issues') != '' || $this->input->post('short_out_issues') != ''){
+			extract($_POST);
+			$issuesdata = array(
+				'project_id' => $project_id,
+				'problems_issues' => $problems_issues,
+				'short_out_issues' => $short_out_issues,
+			);
+
+			$issues_clean_data = $this->security->xss_clean($issuesdata);
+			$result = $this->db->insert('project_problems_issues', $issues_clean_data);
+			
+		}
+		if($result == true){
+			redirect('project/issues_problem/'.$project_id);
+		}
+		
 	}
 	public function select_subTask_superTask()
 	{
@@ -82,37 +119,48 @@ class Project extends CI_Controller
 	}
 	public function post_add_project()
 	{
-		if ($_POST != NULL){
+		if($_POST != NULL){
 			$result = $this->__form_validation();
-			$previous_project_id=$this->Project->project_id();
-			//$year = date("Y");
-			$work_id="OFFM_".date("Y").'_'.$this->Others->id($previous_project_id);
-			if($result == true){
+
 				extract($_POST);
 				$data = array(
-					'work_id' => $work_id,
-					'project_name' => $project_name,
 					'company' => $employer_name,
 					'project_manager' => $project_manager,
 					'task' => $task,
 					'sub_task' => $sub_task,
-					'super_task' => $super_sub_task,
 					'expected_delivery' => $expected_delivery,
 					'created_by' => $this->session->userdata('user'),
 					'created_at' => date('Y-m-d H:i:s'),
-					//'modified_at' => date('Y-m-d H:i:s'),
 					'completion_date' => $completion_date,
+					'final_date' => $final_date,
 					'date_of_bill' => $date_of_bill,
-					'problems_issues' => $problems_issues,
-					'short_out_issues' => $short_out_issues,
 					'priority'   => $priority
 				);
-
 
 				$clean_data = $this->security->xss_clean($data);
 
 				$result = $this->Project->insert('projects', $clean_data);
 				$insert_id = $this->db->insert_id();
+
+				if($result==true)
+				{	
+					$work_number = $this->generateEmpNumber($insert_id);
+
+					$this->db->where('id' , $insert_id);
+					$this->db->update('projects', array('work_id'=>$work_number));
+				}
+				
+				if($this->input->post('problems_issues') != '' || $this->input->post('short_out_issues') != ''){
+					$issuesdata = array(
+						'project_id' => $insert_id,
+						'problems_issues' => $problems_issues,
+						'short_out_issues' => $short_out_issues,
+					);
+		
+					$issues_clean_data = $this->security->xss_clean($issuesdata);
+					$result1 = $this->db->insert('project_problems_issues', $issues_clean_data);
+					
+				}
 				
 					if($_FILES['Receiptsfiles']['name'] != '')
 					{
@@ -141,65 +189,12 @@ class Project extends CI_Controller
 							$imageData = $this->upload->data();
 							$uploadImgData['Receiptsfiles'] = $imageData['file_name'];
 						}
-						$update2 =$this->Main->update('id',$insert_id, $uploadImgData,'projects');         
+						$update2 =$this->Main->update('id',$insert_id, $uploadImgData,'projects');  
+						
 					} 
-					else
-					{
-						$errorUploadType = 'Some problem occurred, please try again.';
-					}  
-
-					/*if ($result) {
-						foreach ($_POST['task'] as $t) {
-							$task_data = array(
-								'task' => $t,
-								'project' => $result,
-								'created_by' => $this->session->userdata('user'),
-								'created_at' => date('Y-m-d H:i:s'),
-								'modified_at' => date('Y-m-d H:i:s')
-							);
-
-							$this->db->insert('task_assign', $task_data);
-						}
-
-						foreach ($_POST['sub_task'] as $st) {
-							$sub_task_data = array(
-								'sub_task' => $st,
-								'project' => $result,
-								'created_by' => $this->session->userdata('user'),
-								'created_at' => date('Y-m-d H:i:s'),
-								'modified_at' => date('Y-m-d H:i:s')
-							);
-
-							$this->db->insert('sub_task_assign', $sub_task_data);
-						}
-
-						foreach ($_POST['super_sub_task'] as $sst) {
-							$super_task_data = array(
-								'super_sub_task' => $sst,
-								'project' => $result,
-								'created_by' => $this->session->userdata('user'),
-								'created_at' => date('Y-m-d H:i:s'),
-								'modified_at' => date('Y-m-d H:i:s')
-							);
-
-							$this->db->insert('super_sub_task_assign', $super_task_data);
-						}
-
-						$this->output->set_output(json_encode(['result' => 1]));
-						return false;
-					} else {
-						$this->output->set_output(json_encode(['result' => 2]));
-						return false;
-					}*/
-					redirect('project');
-				}/*else {
-					$this->output->set_output(json_encode(['result' => 0]));
-					return false;
-				}*/
-			
-		} else {
-			redirect('dashboard');
-		}
+					
+				}
+				redirect('project');
 	}
 	public function edit_tasks()
 	{
@@ -228,19 +223,16 @@ class Project extends CI_Controller
 				'expected_delivery' => $expected_delivery,
 				'task' => $task,
 				'sub_task' => $sub_task,
-				'super_task' => $super_sub_task,
 				'created_by' => $this->session->userdata('user'),
 				'modified_at' => date('Y-m-d H:i:s'),
 				'completion_date' => $completion_date,
+				'final_date' => $final_date,
 				'date_of_bill' => $date_of_bill,
-				'problems_issues' => $problems_issues,
-				'short_out_issues' => $short_out_issues,
 				'priority'   => $priority
 			);
 
 
 			$clean_data = $this->security->xss_clean($data);
-
 			$update = $this->Main->update('id',$taskid, $clean_data,'projects');    
 			
 			if($_FILES['Receiptsfiles']['name'] != '')
@@ -870,5 +862,9 @@ class Project extends CI_Controller
 			redirect('dashboard');
 		}
 	}
-	
+	public function generateEmpNumber($id)
+	{
+		$year = date("Y");
+		return 'OFM_'.$year."_". str_pad($id, 4, 0, STR_PAD_LEFT);
+	}
 }

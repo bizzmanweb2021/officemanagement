@@ -33,130 +33,109 @@
 							<input type="hidden" class="form-control" value = "<?= $taskeditRow['id']?>" name="taskid">
 
                 <div class="card-body">
-                  <div class="form-group">
-                    <label for="exampleInputPassword1">Name of the Client</label>
-                  <select class="form-control" name="employer_name">
-                     <?php foreach($employers as $employer): ?>
-                        <option value="<?= $employer['id']?>" <?php if($employer['id'] == $taskeditRow['company']){ echo "Selected";} ?>><?= $employer['company_name']?></option>
-                      <?php endforeach; ?> 
-                  </select>
-                  </div>
-									<div class="row">
-										<div class="col-md-6">
-												<div class="form-group">
-													<label for="">Nature Of Job</label>
-													<input type="text" class="form-control" value = "<?= $taskeditRow['project_name']?>" name="project_name" placeholder="Enter Project Name">
-												</div>
-										</div>
-										<div class="col-md-6">		
-											<div class="form-group">
-												<label for="exampleInputPassword1">Assign To</label>
-											<select class="form-control" name="project_manager">
-												<?php foreach($employees as $employee): ?>
-														<option value="<?= $employee['id']?>" <?php if($employee['id'] == $taskeditRow['project_manager']){ echo "Selected";} ?>><?= $employee['name']?></option>
-													<?php endforeach; ?> 
-											</select>
-											</div>
-										</div>
-									</div>
+					<div class="row">
+						<div class="col-md-6">	
+							<div class="form-group">
+								<label for="exampleInputPassword1">Name of the Client</label>
+								<select class="form-control" name="employer_name">
+									<?php foreach($employers as $employer): ?>
+										<option value="<?= $employer['id']?>" <?php if($employer['id'] == $taskeditRow['company']){ echo "Selected";} ?>><?= $employer['company_name']?></option>
+									<?php endforeach; ?> 
+								</select>
+							</div>
+						</div>
+						<div class="col-md-6">		
+							<div class="form-group">
+								<label for="exampleInputPassword1">Assign To</label>
+							<select class="form-control" name="project_manager">
+								<?php foreach($employees as $employee): ?>
+										<option value="<?= $employee['id']?>" <?php if($employee['id'] == $taskeditRow['project_manager']){ echo "Selected";} ?>><?= $employee['name']?></option>
+									<?php endforeach; ?> 
+							</select>
+							</div>
+						</div>
+					</div>
 
-									<div class="row">
-										<div class="col-md-4">
-											<div class="form-group">
-												<label for="exampleInputPassword1">Task</label>
-													<select class="form-control task" name="task">
-															<option value="" hidden>Select Task</option>
-															<?php foreach($tasks as $task): ?>
-																<option value="<?= $task['id']?>" <?php if($task['id'] == $taskeditRow['task']){ echo "Selected";} ?>><?= $task['name']?></option>
-															<?php endforeach; ?> 
-													</select>
-											</div>                          
-										</div>
-										<div class="col-md-4">
-											<div class="form-group">
-												<label for="exampleInputPassword1">Sub Task</label>
-													<select class="form-control sub_task" name="sub_task">
-														<?php foreach($subtasks as $subtasksrow): ?>
-																<option value="<?= $subtasksrow['id']?>" <?php if($subtasksrow['id'] == $taskeditRow['sub_task']){ echo "Selected";} ?>><?= $subtasksrow['name']?></option>
-														<?php endforeach; ?> 
-													</select>
-											</div>                          
-										</div>
-										<div class="col-md-4">
-											<div class="form-group">
-												<label for="exampleInputPassword1"> Super Task</label>
-													<select class="form-control super_sub_task" name="super_sub_task">
-															<?php foreach($supertasks as $supertasksrow): ?>
-																<option value="<?= $supertasksrow['id']?>" <?php if($supertasksrow['id'] == $taskeditRow['super_task']){ echo "Selected";} ?>><?= $supertasksrow['name']?></option>
-															<?php endforeach; ?> 
-													</select>
-											</div>                          
-										</div>
-									</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="exampleInputPassword1">Task</label>
+									<select class="form-control task" name="task">
+											<option value="" hidden>Select Task</option>
+											<?php foreach($tasks as $task): ?>
+												<option value="<?= $task['id']?>" <?php if($task['id'] == $taskeditRow['task']){ echo "Selected";} ?>><?= $task['name']?></option>
+											<?php endforeach; ?> 
+									</select>
+							</div>                          
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="exampleInputPassword1">Category</label>
+									<select class="form-control sub_task" name="sub_task">
+										<?php foreach($subtasks as $subtasksrow): ?>
+												<option value="<?= $subtasksrow['id']?>" <?php if($subtasksrow['id'] == $taskeditRow['sub_task']){ echo "Selected";} ?>><?= $subtasksrow['name']?></option>
+										<?php endforeach; ?> 
+									</select>
+							</div>                          
+						</div>
+						
+					</div>
 
-									<div class="row">
-										<div class="col-md-6">
-												<div class="form-group">
-													<label for="">Completion Date</label>
-													<input type="date" class="form-control" name="completion_date" value = "<?= $taskeditRow['completion_date']?>">
-												</div>
-										</div>
-										<div class="col-md-6">		
-											<div class="form-group">
-												<label for="exampleInputPassword1">Date Of Bill</label>
-													<input type="date" class="form-control" name="date_of_bill" value = "<?= $taskeditRow['date_of_bill']?>">
-											</div>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-md-6">
-												<div class="form-group">
-													<label for="">Issues arises during the processing the job</label>
-													<textarea class="form-control" name = "problems_issues" rows="3"><?= $taskeditRow['problems_issues']?></textarea>
-												</div>
-										</div>
-										<div class="col-md-6">		
-											<div class="form-group">
-												<label for="exampleInputPassword1">Short out the issues</label>
-													<textarea class="form-control" name = "short_out_issues" rows="3"><?= $taskeditRow['short_out_issues']?></textarea>
-											</div>
-										</div>
-									</div>
+					<div class="row">
+						<div class="col-md-6">
+								<div class="form-group">
+									<label for="">Completion Date</label>
+									<input type="date" class="form-control" name="completion_date" value = "<?= $taskeditRow['completion_date']?>">
+								</div>
+						</div>
+						<div class="col-md-6">		
+							<div class="form-group">
+								<label for="exampleInputPassword1">Date Of Bill</label>
+									<input type="date" class="form-control" name="date_of_bill" value = "<?= $taskeditRow['date_of_bill']?>">
+							</div>
+						</div>
+					</div>
 
-									<div class="row">
-										<div class="col-md-6">
-											<div class="form-group">
-												<label for="brand_name">Priority:</label>
-												<select class="form-control" id="priority" name="priority">
-														<option value="1" <?php if($taskeditRow['priority'] == 1){ echo "Selected";} ?>>High</option>
-														<option value="2" <?php if($taskeditRow['priority'] == 2){ echo "Selected";} ?>>Important</option>
-														<option value="3" <?php if($taskeditRow['priority'] == 3){ echo "Selected";} ?>>Normal</option>
-														<option value="4" <?php if($taskeditRow['priority'] == 4){ echo "Selected";} ?>>Low</option>
-												</select>
-											</div>
-										</div>
-										<div class="col-md-6">		
-											<div class="form-group">
-												<label for="">Expected Delivery</label>
-												<input type="date" class="form-control" id=""name="expected_delivery" value = "<?= $taskeditRow['expected_delivery']?>">
-											</div>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-md-6">		
-											<div class="form-group">
-												<label for="brand_name">Upload Receipts:</label>
-												<input type="file" name="Receiptsfiles" style="margin-top: 10px;">
-											</div>
-										</div>
-									</div>
-            </div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="brand_name">Priority:</label>
+								<select class="form-control" id="priority" name="priority">
+										<option value="1" <?php if($taskeditRow['priority'] == 1){ echo "Selected";} ?>>High</option>
+										<option value="2" <?php if($taskeditRow['priority'] == 2){ echo "Selected";} ?>>Important</option>
+										<option value="3" <?php if($taskeditRow['priority'] == 3){ echo "Selected";} ?>>Normal</option>
+										<option value="4" <?php if($taskeditRow['priority'] == 4){ echo "Selected";} ?>>Low</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-md-6">		
+							<div class="form-group">
+								<label for="">Expected Delivery</label>
+								<input type="date" class="form-control" id=""name="expected_delivery" value = "<?= $taskeditRow['expected_delivery']?>">
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">		
+							<div class="form-group">
+								<label for="">Final Date</label>
+								<input type="date" class="form-control" id=""name="final_date" value = "<?= $taskeditRow['final_date']?>">
+							</div>
+						</div>
+						<div class="col-md-6">		
+							<div class="form-group">
+								<label for="brand_name">Upload Receipts:</label>
+								<input type="file" name="Receiptsfiles" class="form-control">
+							</div>
+						</div>
+					</div>
+            	</div>
                 <!-- /.card-body -->
 
-			<div class="card-footer">
-				<div id="" class="popup_error" style="font-size: 13px;color:#CC0000;"></div>
-				<button type="submit" class="btn btn-primary btn-block">Submit</button>
-			</div>
+				<div class="card-footer">
+					<div id="" class="popup_error" style="font-size: 13px;color:#CC0000;"></div>
+					<button type="submit" class="btn btn-primary btn-block">Submit</button>
+				</div>
 			
 			</form>
 			<?php endforeach; ?> 
@@ -224,7 +203,7 @@
                 data: {taskID:taskID},
                 success:function(data){
                     $('.sub_task').html(data);
-                    $('.super_sub_task').html('<option value="">Select Sub-task first</option>'); 
+                    $('.super_sub_task').html('<option value="">Select Category First</option>'); 
                 }
             }); 
         }else{

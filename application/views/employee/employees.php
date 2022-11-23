@@ -19,7 +19,7 @@
 
             <div class="card" style="border-radius: 15px">
               <div class="card-header">
-                <a href="<?= base_url('employee/add_employee')?>" data-toggle="tooltip" title="Add Employees"><button class="btn btn-primary"><i class="fa fa-plus"></i></button></a>
+                <a href="<?= base_url('employee/add_employee')?>" data-toggle="tooltip" title="Add Employees"><button class="btn btn-primary">Add Employee</button></a>
               </div>
               <!-- /.card-header -->
               <div class="card-body">

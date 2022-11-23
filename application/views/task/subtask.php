@@ -5,7 +5,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Sub Tasks</h1>
+            <h1>Category</h1>
           </div>
         </div>
       </div><!-- /.container-fluid -->
@@ -22,8 +22,8 @@
               <div class="card-header">
                 <?php /*<a href="<?= base_url('task/add_sub_task/'.$taskId)?>"><button class="btn btn-primary" data-toggle="tooltip" title="Add Sub Task"><i class="fa fa-plus"></i></button></a>*/ ?>
 
-								<?php $TaskId=$this->uri->segment(3); ?>
-								<a href="<?=base_url('task/add_super_sub_task/'.$TaskId)?>" target="_blank"><button class="btn btn-primary" data-toggle="tooltip" title="Add Super-Task">Add Super-Task</button></a>
+								<?php  $TaskId=$this->uri->segment(3); ?>
+								<?php /* <a href="<?=base_url('task/add_super_sub_task/'.$TaskId)?>" target="_blank"><button class="btn btn-primary" data-toggle="tooltip" title="Add Super-Task">Add Super-Task</button></a> */ ?>
 
               </div>
               <!-- /.card-header -->
@@ -31,7 +31,7 @@
                 <table id="example2" class="table table-bordered table-striped">
                   <thead style="background-color:#023047; color: #fff">
                   <tr>
-                    <th>Sub Task Name</th>
+                    <th>Category Name</th>
                     <th>Action</th>
                   </tr>
                   </thead>
@@ -39,7 +39,7 @@
                     <?php foreach($subtasks as $subtaskRow): ?>
                       <tr style="background-color: #fff; color: #000">
                         <td><?= $subtaskRow['name']?></td>
-                        <td><a href="<?= base_url('task/superSubTasks/'.$subtaskRow['id'])?>" class="btn btn-default" style="background-color: #264653; color:#fff" data-toggle="tooltip" title="View Super Sub Task"><i class="fa fa-eye"></i></a> 
+                        <td>
 												<a href="<?= base_url('task/subTaskEdit/'.$subtaskRow['id'])?>" class="btn btn-default" style="background-color:#264653; color: #fff" data-toggle="tooltip" title="Edit"><i class="fa fa-edit"></i></a>
 												<a href="<?= base_url('task/subTaskDelete/'.$subtaskRow['id'].'/'.$TaskId)?>" class="btn btn-default" style="background-color:#264653; color: #fff" data-toggle="tooltip" title="Edit"><i class="fa fa-trash"></i></a>
 											

@@ -11,6 +11,21 @@ class Task_Model extends CI_Model
 		$this->db->from('tasks');
 		return $this->db->get()->result_array();
 	}
+	function getOneTasks($taskId)
+	{
+		$this->db->select('tasks.*');
+	    $this->db->from('tasks');
+	    $this->db->where('tasks.id',$taskId);
+	    $task = $this->db->get()->result_array();
+		$data = array();
+		foreach($task as $row){	
+			$data = array(
+				'taskid' => $taskId,
+				'taskname' => $row['name']
+			);
+		}
+		return $data;
+	}
 	
 	function getAllSubTasks($taskId)
 	{

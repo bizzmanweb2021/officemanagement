@@ -7,7 +7,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Assign Sub Task</h1>
+            <h1>Assign Category</h1>
           </div>
         </div>
       </div><!-- /.container-fluid -->
@@ -22,7 +22,7 @@
             <!-- general form elements -->
             <div class="card card-deafult" style="border-radius: 15px">
               <div class="card-header" style="background-color:#023047; color: #fff">
-                <h3 class="card-title" >Assign Sub Task</h3>
+                <h3 class="card-title" >Assign Category</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->

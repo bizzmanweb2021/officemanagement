@@ -91,7 +91,7 @@ class Authentication extends CI_Controller
 			$data['error']="Invalid Email ID !";
 			}
 		
-	}
+		}
 	   $this->load->view('authentication/forgot_pass',@$data);	
    }     
 

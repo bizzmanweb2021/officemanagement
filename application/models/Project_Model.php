@@ -10,37 +10,91 @@ class Project_Model extends CI_Model
 		u1.name as employee_name, 
 		u2.name as project_manager_name, 
 		companies.company_name,
+		companies.mobile_number,
 		tasks.name AS task_name,
-		sub_tasks.name AS sub_taskName,
-		super_sub_task.name AS super_taskName');
+		sub_tasks.name AS sub_taskName');
 		$this->db->from('projects');
-		$this->db->join('users u1', 'u1.id=projects.created_by');
-		$this->db->join('users u2', 'u2.id=projects.project_manager');
-		$this->db->join('companies', 'companies.id=projects.company');
-		$this->db->join('tasks', 'tasks.id = projects.task');
-		$this->db->join('sub_tasks', 'sub_tasks.id=projects.sub_task');
-		$this->db->join('super_sub_task', 'super_sub_task.id=projects.super_task');
+		$this->db->join('users u1', 'u1.id=projects.created_by','LEFT');
+		$this->db->join('users u2', 'u2.id=projects.project_manager','LEFT');
+		$this->db->join('companies', 'companies.id=projects.company','LEFT');
+		$this->db->join('tasks', 'tasks.id = projects.task','LEFT');
+		$this->db->join('sub_tasks', 'sub_tasks.id = projects.sub_task','LEFT');
+		return $this->db->get()->result_array();
+	}
+	function getAllProjectsByid($id)
+	{
+		$this->db->select('projects.*, 
+		u1.name as employee_name, 
+		u2.name as project_manager_name, 
+		companies.company_name,
+		companies.mobile_number,
+		tasks.name AS task_name,
+		sub_tasks.name AS sub_taskName');
+		$this->db->from('projects');
+		$this->db->join('users u1', 'u1.id=projects.created_by','LEFT');
+		$this->db->join('users u2', 'u2.id=projects.project_manager','LEFT');
+		$this->db->join('companies', 'companies.id=projects.company','LEFT');
+		$this->db->join('tasks', 'tasks.id = projects.task','LEFT');
+		$this->db->join('sub_tasks', 'sub_tasks.id = projects.sub_task','LEFT');
+		$this->db->where('projects.project_manager', $id);
 		return $this->db->get()->result_array();
 	}
 	function getAllPendingProjects()
 	{
 		$this->db->select('projects.*, u1.name as employee_name, u2.name as project_manager_name, companies.company_name');
 		$this->db->from('projects');
-		$this->db->join('users u1', 'u1.id=projects.created_by');
-		$this->db->join('users u2', 'u2.id=projects.project_manager');
-		$this->db->join('companies', 'companies.id=projects.company');
+		$this->db->join('users u1', 'u1.id=projects.created_by','LEFT');
+		$this->db->join('users u2', 'u2.id=projects.project_manager','LEFT');
+		$this->db->join('companies', 'companies.id=projects.company','LEFT');
 		$this->db->where('projects.status', '2');
+		return $this->db->get()->result_array();
+	}
+	function getAllPendingProjectsByid($id)
+	{
+		$this->db->select('projects.*, u1.name as employee_name, u2.name as project_manager_name, companies.company_name');
+		$this->db->from('projects');
+		$this->db->join('users u1', 'u1.id=projects.created_by','LEFT');
+		$this->db->join('users u2', 'u2.id=projects.project_manager','LEFT');
+		$this->db->join('companies', 'companies.id=projects.company','LEFT');
+		$Where = array('projects.status' => '2', 'projects.project_manager' => $id);
+		$this->db->where($Where); 
+		//$this->db->where('projects.status', '2');
 		return $this->db->get()->result_array();
 	}
 	function getAllCompletedProjects()
 	{
 		$this->db->select('projects.*, u1.name as employee_name, u2.name as project_manager_name, companies.company_name');
 		$this->db->from('projects');
-		$this->db->join('users u1', 'u1.id=projects.created_by');
-		$this->db->join('users u2', 'u2.id=projects.project_manager');
-		$this->db->join('companies', 'companies.id=projects.company');
+		$this->db->join('users u1', 'u1.id=projects.created_by','LEFT');
+		$this->db->join('users u2', 'u2.id=projects.project_manager','LEFT');
+		$this->db->join('companies', 'companies.id=projects.company','LEFT');
 		$this->db->where('projects.status', '1');
 		return $this->db->get()->result_array();
+	}
+	function getAllCompletedProjectsByid($id)
+	{
+		$this->db->select('projects.*, u1.name as employee_name, u2.name as project_manager_name, companies.company_name');
+		$this->db->from('projects');
+		$this->db->join('users u1', 'u1.id=projects.created_by','LEFT');
+		$this->db->join('users u2', 'u2.id=projects.project_manager','LEFT');
+		$this->db->join('companies', 'companies.id=projects.company','LEFT');
+		//$this->db->where('projects.status', '1');
+		$Where = array('projects.status' => '1', 'projects.project_manager' => $id);
+		$this->db->where($Where); 
+		return $this->db->get()->result_array();
+	}
+	function getAllissues_problem($id)
+	{
+		$task_issues_query = $this->db->query("SELECT project_problems_issues.*, 
+		projects.company, 
+		companies.company_name,
+		companies.mobile_number 
+		FROM project_problems_issues 
+		LEFT JOIN projects ON projects.id = project_problems_issues.project_id 
+		LEFT JOIN companies ON companies.id = projects.company 
+		WHERE project_problems_issues.project_id = '".$id."'");
+		return $project_problems_issues = $task_issues_query->result_array();
+		
 	}
 	function project_id()
 	{
@@ -132,6 +186,7 @@ class Project_Model extends CI_Model
 		$this->db->where('image.super_sub_task_id', $super_sub_task_id);
 		return $this->db->get()->result_array();
 	}
+
 	function storecaptureimage($data)
 	{
 		$insert = $this->db->insert('image', $data);

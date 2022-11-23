@@ -34,16 +34,16 @@
       </tr>
       </thead>
       <tbody>
-        <?php foreach($projects as $dashboards): ?>
+        <?php foreach($dashboard as $dashboards): ?>
           <tr style="background-color: #fff; color: #000">
             <td> <?= $dashboards['company_name']?></td>
             <td> <?= $dashboards['task_name']?></td>
             <td> <?= $dashboards['project_manager_name']?></td>
-            <td> <?= $dashboards['final_date']?></td>
-            <td><?= $dashboards['expected_delivery']?></td>
-						<td> <?php
+            <td> <?= $dashboards['completion']?></td>
+            <td><?= $dashboards['timeby']?></td>
+						<td> <?php 
 						$current = time();
-						$due_date = strtotime($dashboards['final_date']);	
+						$due_date = strtotime($dashboards['timeby']);	
 						$datediff = $due_date - $current;
 						$difference = floor($datediff/(60*60*24));
 							
@@ -68,7 +68,7 @@
 								<span style="color:red;">Your documents submission date has passed!</span>	
 						<?php	} ?>
 						</td>
-						<td><a href="<?= base_url('project/edit_tasks/'.$dashboards['id'])?>" class="btn btn-default" style="background-color: #264653; color:#fff" data-toggle="tooltip" title="Edit Tasks"><i class="fa fa-eye"></i></a></td>
+						<td></td>
           </tr>
         <?php endforeach; ?>
       </tbody>
@@ -126,11 +126,11 @@
                   </div>
                   <div class="form-group">
                     <label for="">Deadline</label>
-                    <input type="date" class="form-control" id="" name="final_date" placeholder="">
+                    <input type="date" class="form-control" id="" name="completion" placeholder="">
                   </div>
                   <div class="form-group">
-                    <label for="">Expected Delivery</label>
-                    <input type="date" class="form-control" id="" name="expected_delivery " placeholder="">
+                    <label for="">Time By Govt</label>
+                    <input type="date" class="form-control" id=""name="timeby" placeholder="">
                   </div>
                 </div>
                 <!-- /.card-body -->

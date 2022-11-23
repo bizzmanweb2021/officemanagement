@@ -93,13 +93,13 @@
                  <div class="col-md-6">
                     <div class="form-group">
                     <label for="exampleInputEmail1">Office Number*</label>
-                    <input type="text" class="form-control" name="office_number" id="exampleInputname" placeholder="Enter Your Phone">
+                    <input type="text" class="form-control" name="office_number" maxlength="10" id="exampleInputname" placeholder="Enter Your Phone">
                   </div>
                 </div>
                  <div class="col-md-6">
                     <div class="form-group">
                     <label for="exampleInputEmail1">Mobile Number</label>
-                    <input type="text" class="form-control" name="mobile_number" id="exampleInputname" placeholder="Enter Your Phone">
+                    <input type="text" class="form-control" name="mobile_number" maxlength="10" id="exampleInputname" placeholder="Enter Your Phone">
                   </div>
                 </div>
                 </div>

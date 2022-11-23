@@ -110,7 +110,9 @@ class Task extends CI_Controller
 	public function subTasks()
 	{
 		if ($this->session->has_userdata('user') != false) {
-			$data['tasks'] = $this->Task->getAllTasks();
+			$taskId = $this->uri->segment(3);
+			$data['tasks'] = $this->Task->getOneTasks($taskId);
+			//$data['taskId'] =  $this->uri->segment(3);
 			$this->layout->view('task/add_Task_Types', $data);
 		} else {
 			redirect('dashboard');
@@ -141,7 +143,7 @@ class Task extends CI_Controller
 	
 	public function post_add_sub_task()
 	{
-		$task_name = $this->input->post('task_name');
+		$task_name = $this->input->post('task_id');
 		$subTask = $this->input->post('subTask');
 		
 		$total = count($subTask);
@@ -159,7 +161,7 @@ class Task extends CI_Controller
 			}
 		}
 		if($insert){
-			redirect('project');
+			redirect('task/view_task');
 		}
 	}
 	

@@ -6,12 +6,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Sub Task</h1>
+            <h1>Category</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Add Sub Task</li>
+              <li class="breadcrumb-item active">Add Category</li>
             </ol>
           </div>
         </div>
@@ -35,7 +35,7 @@
                 <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
-                    <label for="exampleInputEmail1">Sub Task</label>
+                    <label for="exampleInputEmail1">Category</label>
                     <div class="table-responsive">  
                         <table class="table table-bordered" id="dynamic_field">  
                             <tr>  

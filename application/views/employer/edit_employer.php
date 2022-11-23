@@ -96,13 +96,13 @@
                  <div class="col-md-6">
                     <div class="form-group">
                     <label for="exampleInputEmail1">Office Number*</label>
-                    <input type="text" class="form-control" name="office_number" value="<?= $editEmployersRow['office_number'] ?>">
+                    <input type="text" class="form-control" name="office_number" maxlength="10" value="<?= $editEmployersRow['office_number'] ?>">
                   </div>
                 </div>
                  <div class="col-md-6">
                     <div class="form-group">
                     <label for="exampleInputEmail1">Mobile Number</label>
-                    <input type="text" class="form-control" name="mobile_number" value="<?= $editEmployersRow['mobile_number'] ?>">
+                    <input type="text" class="form-control" name="mobile_number" maxlength="10" value="<?= $editEmployersRow['mobile_number'] ?>">
                   </div>
                 </div>
                 </div>

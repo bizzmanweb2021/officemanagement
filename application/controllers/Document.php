@@ -51,7 +51,7 @@ class Document extends CI_Controller
 		$data['all_gst'] = $this->Document->all_gst($id);
 		$data['all_tds_and_tcs'] = $this->Document->all_tds_and_tcs($id);
 		$data['all_kycDoc'] = $this->Document->getAll_kycDoc($id);
-		$data['folder'] = $this->Project->getData($id);
+		$data['folder'] = $this->Document->getFolderData($id);
 		$data['file']=$this->Document->getDocImages($this->session->userdata('user'),$id);
 		$data['company_verticals'] = $this->Document->getCompany_verticals();
 		$this->layout->view('document/folder',$data);
@@ -308,6 +308,23 @@ class Document extends CI_Controller
 		echo $statutory_due_date;
 
 	}
+	public function showtdsStatutoryDueDate(){
+		
+		$tdsform_number = $_GET['tdsform_number'];
+		//$date = date("Y-m-d");
+		
+		$tdsform_number_sql  = "SELECT tds_tcs_form_name.statutory_due_date 
+		FROM tds_tcs_form_name 
+		WHERE tds_tcs_form_name.id = '".$tdsform_number."'"; 
+		
+		$tdsform_numbe_query = $this->db->query($tdsform_number_sql);
+		$tdsform_date = $tdsform_numbe_query->result_array();
+		foreach($tdsform_date as $tdsform_dateRow){
+			$tdsstatutory_due_date = $tdsform_dateRow['statutory_due_date'];
+		}
+		echo $tdsstatutory_due_date;
+
+	}
 	public function post_add_registrars_companies()
 	{
 		$folderid = $this->input->post("folderid");
@@ -481,6 +498,7 @@ class Document extends CI_Controller
 		extract($_POST);
 		$data = array(
 			'form_name' => $tdsform_number,
+			'statutory_due_date' => $statutory_due_date,
 		);
 
 		$insert = $this->Main->insert('tds_tcs_form_name',$data);
@@ -924,8 +942,10 @@ class Document extends CI_Controller
 		extract($_POST);
 		$data = array(
 			'company_id' => $company_name,
+			'acknowledement_no'  => $acknowledement_no,
 			'folder_id' => $folderid,
 			'form_id' => $form_name,
+			'statutory_due_date' => $statutory_due_date,
 			'return_type' => $return_type,
 			'financial_year' => $financial_year,
 			'quarter' => $quarter,

@@ -13,7 +13,7 @@
           <div class="modal-body">
 			<form action="<?= base_url('document/post_add_registrars_companies')?>" method="post" enctype="multipart/form-data">
 				<input type="hidden" class="form-control" name="folderid" value = "<?php echo $folderid; ?>">
-
+				
                 <div class="card-body">
 						
 						<div class="form-group">
@@ -156,7 +156,7 @@
 			<form action="<?= base_url('document/post_add_tds_form_number')?>" method="post" enctype="multipart/form-data">
 	
 				<input type="hidden" class="form-control" name="folderid" value = "<?php echo $folderid; ?>">
-
+				
                 <div class="card-body">
 					<div class="row">
 						<div class="col-md-6">
@@ -255,7 +255,7 @@
 			<form action="<?= base_url('document/post_add_IncomeTax')?>" method="post" enctype="multipart/form-data">
 				
 				<input type="hidden" class="form-control" name="folderid" value = "<?php echo $folderid; ?>">
-
+				
                 <div class="card-body">   
 					<div class="row">
 						<div class="col-md-12">
@@ -352,7 +352,7 @@
 			<form action="<?= base_url('document/post_add_accounts')?>" method="post" enctype="multipart/form-data">
 				
 				<input type="hidden" class="form-control" name="folderid" value = "<?php echo $folderid; ?>">
-
+				
                 <div class="card-body">   
 					<div class="row">
 						<div class="col-md-12">
@@ -449,7 +449,7 @@
 			<form action="<?= base_url('document/post_add_professional_tax')?>" method="post" enctype="multipart/form-data">
 	
 				<input type="hidden" class="form-control" name="folderid" value = "<?php echo $folderid; ?>">
-
+			
                 <div class="card-body">
 					<div class="row">
 						<div class="col-md-12">
@@ -518,7 +518,7 @@
 			<form action="<?= base_url('document/post_add_trade_licence')?>" method="post" enctype="multipart/form-data">
 	
 				<input type="hidden" class="form-control" name="folderid" value = "<?php echo $folderid; ?>">
-
+				
                 <div class="card-body">
 					<div class="row">
 						<div class="col-md-12">
@@ -670,7 +670,7 @@
 			<form action="<?= base_url('document/post_add_gst')?>" method="post" enctype="multipart/form-data">
 	
 				<input type="hidden" class="form-control" name="folderid" value = "<?php echo $folderid; ?>">
-
+				
                 <div class="card-body">
 					<div class="row">
 						<div class="col-md-12">
@@ -749,13 +749,17 @@
             </button>
           </div>
           <div class="modal-body">
+		  	<?php $folder_name = 0;
+				foreach($folder as $folderRow){ 
+				$folder_name = $folderRow['folder_name'];
+			} ?>
 			<form action="<?= base_url('document/post_add_tdstcs')?>" method="post" enctype="multipart/form-data">
 	
 				<input type="hidden" class="form-control" name="folderid" value = "<?php echo $folderid; ?>">
-
+				<input type="hidden" class="form-control folder_name" name="folder_name" value = "<?php echo $folder_name; ?>">
                 <div class="card-body">
 					<div class="row">
-						<div class="col-md-12">
+						<div class="col-md-6">
 							<div class="form-group">
 								<label for=""> Company Name</label>
 								<select class="form-control" name="company_name">
@@ -765,12 +769,20 @@
 								</select>
 							</div>
 						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="">Acknowledement No</label>
+								<input type="text" class="form-control" name="acknowledement_no" value="">
+							</div>
+						</div>
+
 					</div>
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group">
 								<label for=""> Form Name</label>
-								<select class="form-control" name="form_name">
+								<select class="form-control tdsform_number" name="form_name">
+									<option value="">Select Form Name</option>
 									<?php foreach($tds_tcs_form_name as $tds_tcs_form_nameRow): ?>
 									<option value="<?= $tds_tcs_form_nameRow['id']?>"><?= $tds_tcs_form_nameRow['form_name']?></option>
 									<?php endforeach; ?> 
@@ -780,12 +792,8 @@
 						
 						<div class="col-md-6">
 							<div class="form-group">
-								<label for=""> Return Type</label>
-								<select class="form-control" name="return_type">
-									<option value="" hidden>Return Type</option>
-									<option value="1">CORRECTION</option>
-									<option value="2">ORIGINAL</option>
-								</select>
+								<label for="">Statutory Due Date</label>
+								<input type="text" class="form-control tdsstatutoryduedate" name="statutory_due_date" value="">
 							</div>
 						</div>
 						
@@ -794,21 +802,37 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<label for=""> Financial Year</label>
-								<input type="text" class="form-control" name="financial_year">
+								<input type="text" class="form-control financial_year" name="financial_year" value = "<?php echo $folder_name; ?>">
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
 								<label for=""> Quarter</label>
-								<input type="text" class="form-control" name="quarter">
+								<select class="form-control" name="quarter">
+									<option value="" hidden>Select Quarter</option>
+									<option value="4th Quarter -<?= $folder_name; ?>">4th Quarter -<?= $folder_name; ?></option>
+									<option value="3rd Quarter -<?= $folder_name; ?>">3rd Quarter -<?= $folder_name; ?></option>
+									<option value="2nd Quarter -<?= $folder_name; ?>">2nd Quarter -<?= $folder_name; ?></option>
+									<option value="1st Quarter -<?= $folder_name; ?>">1st Quarter -<?= $folder_name; ?></option>
+								</select>
 							</div>
 						</div>
 					</div>  
 					<div class="row">
-						<div class="col-md-12">
+						<div class="col-md-6">
 							<div class="form-group">
 								<label for=""> Date Of File</label>
 								<input type="date" class="form-control" name="date_of_file">
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for=""> Return Type</label>
+								<select class="form-control" name="return_type">
+									<option value="" hidden>Return Type</option>
+									<option value="1">CORRECTION</option>
+									<option value="2">ORIGINAL</option>
+								</select>
 							</div>
 						</div>
 					</div>  
@@ -843,13 +867,19 @@
 			<form action="<?= base_url('document/post_add_tds_form_number')?>" method="post" enctype="multipart/form-data">
 	
 				<input type="hidden" class="form-control" name="folderid" value = "<?php echo $folderid; ?>">
-
+			
                 <div class="card-body">
 					<div class="row">
-						<div class="col-md-12">
+						<div class="col-md-6">
 							<div class="form-group">
 								<label for="">FORM NUMBER</label>
 								<input type="text" class="form-control" name="tdsform_number" placeholder="Enter From Number">
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="">STATUTORY DUE DATE</label>
+								<input type="Date" class="form-control" name="statutory_due_date">
 							</div>
 						</div>
 					</div>     
@@ -864,14 +894,14 @@
 					<thead style="background-color:#023047; color: #fff;position: sticky;top: 0;">
 					<tr>
 						<th>Form Number</th>
-						<th>Action</th>
+						<th>Statutory Due Date</th>
 					</tr>
 					</thead>
 					<tbody>
 						<?php foreach($tds_tcs_form_name as $tds_tcs_form_nameRow): ?>
 						<tr style="background-color: #fff; color: #000">
 							<td><?= $tds_tcs_form_nameRow['form_name']?></td>
-							<td><a href="<?= base_url('document/delete_tdsform_number/'.$tds_tcs_form_nameRow['id'].'/'.$folderid)?>"><i class="fa fa-trash" style="color: red;"></i></a></td>
+							<td><?= $tds_tcs_form_nameRow['statutory_due_date']?>&nbsp;&nbsp;<a href="<?= base_url('document/delete_tdsform_number/'.$tds_tcs_form_nameRow['id'].'/'.$folderid)?>"><i class="fa fa-trash" style="color: red;"></i></a></td>
 						</tr>
 						<?php endforeach; ?>
 					</tbody>

@@ -27,38 +27,62 @@
               <!-- form start -->
               <form id="add-employee" action="<?= base_url('employee/post_add_employee')?>" method="post">
                 <div class="card-body">
-                  <div class="form-group">
-                    <label for="exampleInputPassword1">Reporting Manager</label>
-                  <select class="form-control" name="reporting_manager">
-                     <?php foreach($employees as $employee): ?>
-                        <option value="<?= $employee['id']?>"><?= $employee['name']?></option>
-                      <?php endforeach; ?> 
-                  </select>
-                  </div>
                   <div class="row">
-                      <div class="col-md-6"> <div class="form-group">
-                    <label for="">Name</label>
-                    <input type="text" class="form-control" id="" name="name" placeholder="Enter Name">
-                  </div></div>
-                      <div class="col-md-6"><div class="form-group">
-                    <label for="">Email</label>
-                    <input type="email" class="form-control" id="" name="email" placeholder="Enter Email">
-                  </div></div>
+                    	<div class="col-md-6"> 
+												<div class="form-group">
+													<label for="">Name</label>
+													<input type="text" class="form-control" id="" name="name" placeholder="Enter Name">
+												</div>
+											</div>
+                      <div class="col-md-6">
+												<div class="form-group">
+													<label for="">Email</label>
+													<input type="email" class="form-control" id="" name="email" placeholder="Enter Email">
+												</div>
+											</div>
+									</div>
                  
-                 
-                  <div class="col-md-6">
-                  <div class="form-group">
-                    <label for="">Username</label>
-                    <input type="text" class="form-control" id="" name="username" placeholder="Enter Username">
-                  </div>
-                  </div>
-                  <div class="col-md-6">
-                  <div class="form-group">
-                    <label for="">Password</label>
-                    <input type="text" class="form-control" id=""name="password" placeholder="Enter Password">
-                  </div>
-                  </div>
-                </div>
+									<div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+													<label for="">Username</label>
+													<input type="text" class="form-control" id="" name="username" placeholder="Enter Username">
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="form-group">
+													<label for="">Password</label>
+													<input type="text" class="form-control" id=""name="password" placeholder="Enter Password">
+												</div>
+											</div>
+                	</div>
+
+									<div class="row">
+										<div class="col-md-6">
+												<div class="form-group">
+													<label for="exampleInputPassword1">Employee Role</label>
+													<select class="form-control" name="role_id">
+														<option hidden>Select Role</option>
+														<?php foreach($empRole as $empRoleRow): ?>
+																<option value="<?= $empRoleRow['id']?>"><?= $empRoleRow['name']?></option>
+															<?php endforeach; ?> 
+													</select>
+												</div>
+										</div>
+										<div class="col-md-6">
+												<div class="form-group">
+													<label for="exampleInputPassword1">Reporting Manager</label>
+													<select class="form-control" name="reporting_manager">
+														<?php foreach($employees as $employee): ?>
+																<option value="<?= $employee['id']?>"><?= $employee['name']?></option>
+															<?php endforeach; ?> 
+													</select>
+												</div>
+										</div>
+												
+									</div>
+
+
                 </div>
                 <!-- /.card-body -->
 

@@ -24,6 +24,7 @@
                     <div class="card" style="border-radius: 15px">
                         <div class="card-header"></div>
 
+						
 						<!-- /.card-header -->
 						<div class="row">
 							<div class="col-md-6">
@@ -587,7 +588,7 @@
 
 								<?php $folderid = $this->uri->segment(3); ?>
 								<input type="hidden" name="folderid" value="<?php echo $folderid; ?>">
-
+								
 								<select class="form-control" id="projectsId" name="projectsId">
 									<option value="">Select Project</option>
 									<?php 
@@ -629,7 +630,7 @@
 </div>
 
 
-	<?php $this->load-> view('document/income_taxModal'); ?>
+	<?php $this->load-> view('document/all_Modal'); ?>
 
 	
 
@@ -732,8 +733,8 @@
 		$(".form_number").change(function() {	
 
 			var form_number = $(this).val();
-		
-			//alert(group_name);
+			
+			//alert(folder_name);
 			var folder_id = '<?php echo $this->uri->segment(3); ?>';
 
 			if (form_number == "") {
@@ -747,9 +748,33 @@
 						success: function(data) {
 							//alert(data);		
 							$(".statutoryduedate").val(data);
+							
 						}
 				});
 			}
+		});
+
+		$(".tdsform_number").change(function() {	
+
+		var tdsform_number = $(this).val();
+
+		//alert(tdsform_number);
+		var folder_id = '<?php echo $this->uri->segment(3); ?>';
+
+		if (tdsform_number == "") {
+				$(".tdsstatutoryduedate").val("");
+		}
+		else {	
+			$.ajax({	
+					type: "GET",	
+					url: "<?= base_url("/document/showtdsStatutoryDueDate")?>",
+					data: { tdsform_number: tdsform_number, folder_id :folder_id },
+					success: function(data) {
+						//alert(data);		
+						$(".tdsstatutoryduedate").val(data);
+					}
+			});
+		}
 		});
 
 		$(".dateTextField1, .dateTextField2").change(function() {			

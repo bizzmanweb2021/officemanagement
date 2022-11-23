@@ -34,7 +34,7 @@
 
 
        </li>
-       <?php if($this->session->userdata('user')=='1') {?>
+				
        <li class="nav-item d-none d-sm-inline-block">
 
           <a href="<?= base_url('group')?>" class="nav-link" style="color:#fff">
@@ -58,12 +58,12 @@
           <a href="<?= base_url('project')?>" class="nav-link" style="color:#fff">
              
               <p>
-							Task
+							Project
               </p>
             </a>
 
         </li>
-				<?php } ?>
+				
         <li class="nav-item d-none d-sm-inline-block">
 <a href="<?= base_url('document/view_details')?>" class="nav-link" style="color:#fff">
                
